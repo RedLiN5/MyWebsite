@@ -4,11 +4,19 @@ import re
 import string
 import sys
 import os
-import urllib
-# import urllib2
+import warnings
 from bs4 import BeautifulSoup
 import requests
 from lxml import etree
+
+
+if sys.version_info[0] == 2:
+    import urllib
+    import urllib2
+elif sys.version_info[0] == 3:
+    import urllib
+else:
+    warnings.warn('Undetected python version.')
 
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
