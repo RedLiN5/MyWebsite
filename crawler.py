@@ -12,14 +12,14 @@ from selenium import webdriver
 import pickle
 
 
-def get_cookie_from_network():
+def get_cookie_from_network(username, password):
     url_login = 'http://login.weibo.cn/login/'
     driver = webdriver.PhantomJS()
     driver.get(url_login)
-    driver.find_element_by_xpath('//input[@type="text"]').send_keys('your_weibo_accout') # 改成你的微博账号
-    driver.find_element_by_xpath('//input[@type="password"]').send_keys('your_weibo_password') # 改成你的微博密码
+    driver.find_element_by_xpath('//input[@type="text"]').send_keys(username)
+    driver.find_element_by_xpath('//input[@type="password"]').send_keys(password)
 
-    driver.find_element_by_xpath('//input[@type="submit"]').click() # 点击登录
+    driver.find_element_by_xpath('//input[@type="submit"]').click()
 
     # 获得 cookie信息
     cookie_list = driver.get_cookies()
