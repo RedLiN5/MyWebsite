@@ -21,7 +21,6 @@ def numpoint(im):
 # 计算5*5范围内点的密度
 def pointmidu(im):
     w, h = im.size
-    p = []
     for y in range(0, h, 5):
         for x in range(0, w, 5):
             box = (x, y, x + 5, y + 5)
