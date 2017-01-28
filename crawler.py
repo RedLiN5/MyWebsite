@@ -6,11 +6,12 @@ import os
 import sys
 import codecs
 import shutil
-import urllib
+import urllib.request
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import selenium.webdriver.support.ui as ui
 from selenium.webdriver.common.action_chains import ActionChains
+# from validate import *
 
 driver = webdriver.Firefox()
 wait = ui.WebDriverWait(driver,10)
@@ -30,7 +31,9 @@ def LoginWeibo(username, password):
 
         # 重点: 暂停时间输入验证码
         # pause(millisenconds)
-
+        img = driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
+        src = img.get_attribute('src')
+        urllib.request.urlretrieve(src, "1.png")
         time.sleep(20)
 
         elem_sub = driver.find_element_by_name("submit")
@@ -41,3 +44,8 @@ def LoginWeibo(username, password):
         print('Error:', e)
     finally:
         print(u'End LoginWeibo!\n\n')
+
+
+if __name__ == '__main__':
+    LoginWeibo(username='13652063773',
+               password='4372125')
