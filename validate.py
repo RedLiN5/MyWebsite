@@ -1,8 +1,9 @@
 # encoding=utf-8
-###利用点的密度计算
+
 import sys
 from pytesser import pytesser
 from PIL import Image, ImageEnhance, ImageFilter, ImageDraw
+import time
 
 
 
@@ -45,7 +46,10 @@ def ocrend():  ##识别
 
 
 if __name__ == '__main__':
-    image_name = "1.png"
+    image_name = 'ValidationImages/' +\
+                 time.strftime('%y%m%d%H%M%S',
+                               time.localtime(time.time())) +\
+                 '.png'
     im = Image.open(image_name)
     im = im.filter(ImageFilter.DETAIL)
     im = im.filter(ImageFilter.MedianFilter())
