@@ -33,7 +33,7 @@ def LoginWeibo(username, password):
         # pause(millisenconds)
         img = driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
         src = img.get_attribute('src')
-        urllib.request.urlretrieve(src, "1.png")
+        urllib.request.urlretrieve(src, "ValidationImages/1.png")
         time.sleep(20)
 
         elem_sub = driver.find_element_by_name("submit")
