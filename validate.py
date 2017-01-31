@@ -46,10 +46,11 @@ def ocrend():  ##识别
 
 
 if __name__ == '__main__':
-    image_name = 'ValidationImages/' +\
-                 time.strftime('%y%m%d%H%M%S',
-                               time.localtime(time.time())) +\
-                 '.png'
+    # image_name = 'ValidationImages/' +\
+    #              time.strftime('%y%m%d%H%M%S',
+    #                            time.localtime(time.time())) +\
+    #              '.png'
+    image_name = '/Users/Leslie/GitHub/WeiboFans/1.png'
     im = Image.open(image_name)
     im = im.filter(ImageFilter.DETAIL)
     im = im.filter(ImageFilter.MedianFilter())
