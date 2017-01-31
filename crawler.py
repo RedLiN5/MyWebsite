@@ -36,6 +36,8 @@ def LoginWeibo(username, password):
         urllib.request.urlretrieve(src, "ValidationImages/1.png")
         time.sleep(20)
 
+        # TODO(Leslie): To recognize validation codes.
+
         elem_sub = driver.find_element_by_name("submit")
         elem_sub.click()  # 点击登陆
         time.sleep(2)
@@ -44,6 +46,12 @@ def LoginWeibo(username, password):
         print('Error:', e)
     finally:
         print(u'End LoginWeibo!\n\n')
+
+def RetrieveData():
+    pass
+
+def SaveDataset():
+    pass
 
 
 if __name__ == '__main__':
