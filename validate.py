@@ -21,28 +21,28 @@ def numpoint(im):
 
 # 计算5*5范围内点的密度
 def pointmidu(im):
-    w, h = im.size
-    for y in range(0, h, 5):
-        for x in range(0, w, 5):
-            box = (x, y, x + 5, y + 5)
-            im1 = im.crop(box)
-            a = numpoint(im1)
-            if a < 11:  ##如果5*5范围内小于11个点，那么将该部分全部换为白色。
-                for i in range(x, x + 5):
-                    for j in range(y, y + 5):
-                        im.putpixel((i, j), 255)
+    # w, h = im.size
+    # for y in range(0, h, 5):
+    #     for x in range(0, w, 5):
+    #         box = (x, y, x + 5, y + 5)
+    #         im1 = im.crop(box)
+    #         a = numpoint(im1)
+    #         if a < 11:  ##如果5*5范围内小于11个点，那么将该部分全部换为白色。
+    #             for i in range(x, x + 5):
+    #                 for j in range(y, y + 5):
+    #                     im.putpixel((i, j), 255)
     im.save(r'img.jpg')
 
 
 def ocrend():  ##识别
     image_name = "img.jpg"
     im = Image.open(image_name)
-    im = im.filter(ImageFilter.MedianFilter())
+    im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
     enhancer = ImageEnhance.Contrast(im)
-    im = enhancer.enhance(2)
+    im = enhancer.enhance(1)
     im = im.convert('1')
     im.save("1.tif")
-    print(pytesser.image_file_to_string('1.tif'))
+    print('Text:', pytesser.image_file_to_string('1.tif'))
 
 
 if __name__ == '__main__':
@@ -52,8 +52,8 @@ if __name__ == '__main__':
     #              '.png'
     image_name = '/Users/Leslie/GitHub/WeiboFans/1.png'
     im = Image.open(image_name)
-    im = im.filter(ImageFilter.DETAIL)
-    im = im.filter(ImageFilter.MedianFilter())
+    im = im.convert('RGB').filter(ImageFilter.DETAIL)
+    im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
     enhancer = ImageEnhance.Contrast(im)
     im = enhancer.enhance(2)
