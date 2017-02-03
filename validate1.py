@@ -19,22 +19,23 @@ builder = pyocr.builders.TextBuilder()
 txt = tool.image_to_string(Image.open('/Users/Leslie/GitHub/WeiboFans/1.png'),
                            lang=lang,
                            builder=builder)
+print(txt)
 
 
-# Digits - Only Tesseract (not 'libtesseract' yet !)
-digits = tool.image_to_string(
-    Image.open('test-digits.png'),
-    lang=lang,
-    builder=pyocr.tesseract.DigitBuilder()
-)
 
 
-if tool.can_detect_orientation():
-    try:
-        orientation = tool.detect_orientation(
-            Image.open('/Users/Leslie/GitHub/WeiboFans/1.png'),
-            lang='fra'
-        )
-        print("Orientation: {}".format(orientation))
-    except pyocr.PyocrException as exc:
-        print("Orientation detection failed: {}".format(exc))
+# Orientation and script detection (OSD):
+from PIL import Image
+from tesserocr import PyTessBaseAPI, PSM
+
+with PyTessBaseAPI(psm=PSM.AUTO_OSD) as api:
+    image = Image.open("/Users/Leslie/GitHub/WeiboFans/1.png")
+    api.SetImage(image)
+    api.Recognize()
+
+    it = api.AnalyseLayout()
+    orientation, direction, order, deskew_angle = it.Orientation()
+    print("Orientation: {:d}".format(orientation))
+    print("WritingDirection: {:d}".format(direction))
+    print("TextlineOrder: {:d}".format(order))
+    print("Deskew angle: {:.4f}".format(deskew_angle))
