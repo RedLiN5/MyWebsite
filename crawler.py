@@ -4,6 +4,7 @@ import time
 import re
 import os
 import sys
+import datetime
 import codecs
 import shutil
 import urllib.request
@@ -33,7 +34,10 @@ def LoginWeibo(username, password):
         # pause(millisenconds)
         img = driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
         src = img.get_attribute('src')
-        urllib.request.urlretrieve(src, "ValidationImages/1.png")
+        name = datetime.datetime.now().strftime("%y%m%d%H%M%S")
+        urllib.request.urlretrieve(src, "ValidationImages/" +\
+                                   name +\
+                                   ".png")
         time.sleep(20)
 
         # TODO(Leslie): To recognize validation codes.
