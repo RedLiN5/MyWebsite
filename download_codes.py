@@ -21,7 +21,7 @@ for i in range(100):
         name = datetime.datetime.now().strftime("%y%m%d%H%M%S")
         urllib.request.urlretrieve(src, "ValidationImages/" +\
                                    name +\
-                                   ".png")
+                                   ".jpg")
 
         driver.refresh()
         time.sleep(2)
