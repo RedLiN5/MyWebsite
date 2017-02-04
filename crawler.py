@@ -9,9 +9,8 @@ import codecs
 import shutil
 import urllib.request
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import selenium.webdriver.support.ui as ui
-from selenium.webdriver.common.action_chains import ActionChains
+from pyocr import ocr
 # from validate import *
 
 driver = webdriver.Firefox()
@@ -30,17 +29,19 @@ def LoginWeibo(username, password):
         elem_pwd = driver.find_element_by_xpath("/html/body/div[2]/form/div/input[2]")
         elem_pwd.send_keys(password)  # 密码
 
-        # 重点: 暂停时间输入验证码
-        # pause(millisenconds)
         img = driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
         src = img.get_attribute('src')
         name = datetime.datetime.now().strftime("%y%m%d%H%M%S")
         urllib.request.urlretrieve(src, "ValidationImages/" +\
                                    name +\
-                                   ".png")
-        time.sleep(20)
+                                   ".jpg")
 
         # TODO(Leslie): To recognize validation codes.
+        answer = ocr(im = "ValidationImages/" + name + ".jpg")
+        elem_cap = driver.find_element_by_class_name('code')
+        elem_cap.send_keys(answer)
+
+        time.sleep(5)
 
         elem_sub = driver.find_element_by_name("submit")
         elem_sub.click()  # 点击登陆
