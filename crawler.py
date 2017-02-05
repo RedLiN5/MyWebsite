@@ -6,6 +6,7 @@ import os
 import sys
 import datetime
 import codecs
+import pandas as pd
 import shutil
 import urllib.request
 from selenium import webdriver
@@ -23,6 +24,7 @@ class SinaWeibo(object):
     def __init__(self):
         self.driver = webdriver.Firefox()
         wait = ui.WebDriverWait(self.driver, 10)
+        self.df = pd.DataFrame(columns=['UserName', 'URL'])
 
     def login(self, username, password):
         try:
@@ -79,6 +81,11 @@ class SinaWeibo(object):
             raise ('"weibo" and "user_name" cannot be empty simultaneously')
 
 
-    def SaveDataset(self):
+    def _following(self):
         pass
 
+    def _friend(self):
+        pass
+
+    def _sort_by_likes(self):
+        pass
