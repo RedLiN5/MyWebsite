@@ -90,6 +90,7 @@ class SinaWeibo(object):
             raise ValueError('"weibo" cannot be empty')
 
     def _following(self):
+        # WAP website can only show 200 followings
         ids = []
         usernames = []
         elem_following = self.driver.find_element_by_xpath('html/body/div[2]/div/a[1]')
@@ -101,6 +102,7 @@ class SinaWeibo(object):
 
         for i in range(total_page):
             for j in range(10):
+                # TODO Count number of tag 'table'
                 elem_user = self.driver.find_element_by_xpath('html/body/table[%d]'%(j+1))
                 elem_user_url = elem_user.find_element_by_xpath('table/tbody/tr/td[2]/a')
                 username = elem_user_url.text
@@ -114,4 +116,15 @@ class SinaWeibo(object):
         pass
 
     def _sort_by_likes(self):
-        pass
+        self.driver = webdriver.Firefox()
+        self.driver.get('http://weibo.com/')
+        elem_user = self.driver.find_element_by_name('username')
+        elem_user.send_keys('13652063773')
+        elem_password = self.driver.find_element_by_name('password')
+        elem_password.send_keys('4372125')
+        elem_submit = self.driver.find_element_by_class_name('W_btn_a')
+        elem_submit.click()
+
+        # TODO Searching
+
+        #like_part = self.driver.find_element_by_id('Pl_Official_LikeMerge__16')
