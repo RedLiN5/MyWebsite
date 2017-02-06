@@ -24,7 +24,7 @@ class SinaWeibo(object):
     def __init__(self):
         self.driver = webdriver.Firefox()
         wait = ui.WebDriverWait(self.driver, 10)
-        self.df = pd.DataFrame(columns=['UserName', 'URL'])
+        self.df = pd.DataFrame(columns=['ID', 'UserName'])
 
     def login(self, username, password):
         try:
@@ -72,6 +72,9 @@ class SinaWeibo(object):
         else:
             raise ValueError('"user" cannot be empty')
 
+        elem_user = self.driver.find_element_by_xpath('html/body/table[1]/tbody/tr/td[2]/a')
+        elem_user.click()
+
     def search_weibo(self, weibo=None):
         if not weibo:
             raise ValueError('"weibo" cannot be empty')
@@ -87,7 +90,25 @@ class SinaWeibo(object):
             raise ValueError('"weibo" cannot be empty')
 
     def _following(self):
-        pass
+        ids = []
+        usernames = []
+        elem_following = self.driver.find_element_by_xpath('html/body/div[2]/div/a[1]')
+        elem_following.click()
+        elem_pagelist = self.driver.find_element_by_id('pagelist')
+        pagelist = elem_pagelist.find_element_by_tag_name('div').text
+        m = re.search("/([0-9]+)页", pagelist)
+        total_page = int(m.group(1))
+
+        for i in range(total_page):
+            for j in range(10):
+                elem_user = self.driver.find_element_by_xpath('html/body/table[%d]'%(j+1))
+                elem_user_url = elem_user.find_element_by_xpath('table/tbody/tr/td[2]/a')
+                username = elem_user_url.text
+                url = elem_user_url.get_attribute('href')
+                m = re.search('/([0-9]+)\?', url)
+                id = m.group(1)
+                ids.append(id)
+                usernames.append(username)
 
     def _friend(self):
         pass
