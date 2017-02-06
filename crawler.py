@@ -58,28 +58,33 @@ class SinaWeibo(object):
         finally:
             print(u'End LoginWeibo!\n\n')
 
-    def search(self, weibo=None, user_name=None):
-        if weibo or user_name:
-            raise ('"weibo" and "user_name" cannot be empty simultaneously')
+    def search_user(self, user=None):
+        if not user:
+            raise ValueError('"user" cannot be empty')
         elem_search = self.driver.find_element_by_xpath('html/body/div[2]/a[4]')
         elem_search.click()
         elem_keyword = self.driver.find_element_by_name('keyword')
 
-        if user_name and weibo:
-            pass
-            print('Search by user name is on tab 1 and by weibo on tab 2.')
-            # TODO(Leslie) Create a new tab, and copy and paste current page on it.
-        elif user_name:
-            elem_keyword.send_keys(user_name)
+        if user:
+            elem_keyword.send_keys(user)
             elem_submit = self.driver.find_element_by_name('suser')
             elem_submit.click()
-        elif weibo:
+        else:
+            raise ValueError('"user" cannot be empty')
+
+    def search_weibo(self, weibo=None):
+        if not weibo:
+            raise ValueError('"weibo" cannot be empty')
+        elem_search = self.driver.find_element_by_xpath('html/body/div[2]/a[4]')
+        elem_search.click()
+        elem_keyword = self.driver.find_element_by_name('keyword')
+
+        if weibo:
             elem_keyword.send_keys(weibo)
             elem_submit = self.driver.find_element_by_name('smblog')
             elem_submit.click()
         else:
-            raise ('"weibo" and "user_name" cannot be empty simultaneously')
-
+            raise ValueError('"weibo" cannot be empty')
 
     def _following(self):
         pass
