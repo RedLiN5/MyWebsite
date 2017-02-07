@@ -2,17 +2,10 @@
 
 import time
 import re
-import os
-import sys
-import datetime
 import codecs
 import pandas as pd
-import shutil
-import urllib.request
 from selenium import webdriver
 import selenium.webdriver.support.ui as ui
-from pyocr import ocr
-# from validate import *
 
 
 #全局变量 文件操作读写信息
@@ -139,9 +132,17 @@ class SinaWeibo(object):
         elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
         elem_likes.find_element_by_class_name('more_txt').click()
         elem_likeswb = self.driver.find_element_by_id('Pl_Core_LikesFeedV6__68')
-        all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
+        elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
+        all_likes_wb = elem_all_likes_wb.find_elements_by_xpath('div')
 
+        deletes = 0
+        for element in all_likes_wb:
+            class_name = element.find_element_by_xpath('div[1]').get_attribute('class')
+            if class_name == 'WB_empty':
+                deletes += 1
+            #elif
 
+        #test.send_keys(Keys.COMMAND + Keys.ENTER)
 
 
         #like_part = self.driver.find_element_by_id('Pl_Official_LikeMerge__16')
