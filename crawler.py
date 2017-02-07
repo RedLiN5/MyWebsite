@@ -28,29 +28,30 @@ class SinaWeibo(object):
 
     def login(self, username, password):
         try:
-            self.driver.get("http://login.weibo.cn/login/")
-            elem_user = self.driver.find_element_by_name("mobile")
-            elem_user.send_keys(username)  # 用户名
-            elem_pwd = self.driver.find_element_by_xpath("/html/body/div[2]/form/div/input[2]")
-            elem_pwd.send_keys(password)  # 密码
+            self.driver = webdriver.Firefox()
+            self.driver.get('http://weibo.com/')
+            elem_user = self.driver.find_element_by_name('username')
+            elem_user.send_keys('')
+            elem_password = self.driver.find_element_by_name('password')
+            elem_password.send_keys('')
 
-            img = self.driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
-            src = img.get_attribute('src')
-            name = datetime.datetime.now().strftime("%y%m%d%H%M%S")
-            urllib.request.urlretrieve(src, "ValidationImages/" +\
-                                       name +\
-                                       ".jpg")
+            # img = self.driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
+            # src = img.get_attribute('src')
+            # name = datetime.datetime.now().strftime("%y%m%d%H%M%S")
+            # urllib.request.urlretrieve(src, "ValidationImages/" +\
+            #                            name +\
+            #                            ".jpg")
+            #
+            # # TODO(Leslie): To recognize validation codes.
+            # answer = ocr(im = "ValidationImages/" + name + ".jpg")
+            # elem_cap = self.driver.find_element_by_name('code')
+            # elem_cap.send_keys(answer)
+            # time.sleep(3)
 
-            # TODO(Leslie): To recognize validation codes.
-            answer = ocr(im = "ValidationImages/" + name + ".jpg")
-            elem_cap = self.driver.find_element_by_name('code')
-            elem_cap.send_keys(answer)
-            time.sleep(3)
-
-            elem_remem = self.driver.find_element_by_name('remember')
+            elem_remem = self.driver.find_element_by_id('login_form_savestate')
             elem_remem.click()
-            elem_sub = self.driver.find_element_by_name("submit")
-            elem_sub.click()  # 点击登陆
+            elem_submit = self.driver.find_element_by_class_name('W_btn_a')
+            elem_submit.click()
             time.sleep(2)
 
         except Exception as e:
@@ -61,19 +62,26 @@ class SinaWeibo(object):
     def search_user(self, user=None):
         if not user:
             raise ValueError('"user" cannot be empty')
-        elem_search = self.driver.find_element_by_xpath('html/body/div[2]/a[4]')
-        elem_search.click()
-        elem_keyword = self.driver.find_element_by_name('keyword')
 
         if user:
+            elem_input = self.driver.find_element_by_class_name('gn_search_v2')
+            elem_keyword = elem_input.find_element_by_xpath('input')
             elem_keyword.send_keys(user)
-            elem_submit = self.driver.find_element_by_name('suser')
+            elem_submit = elem_input.find_element_by_xpath('a')
             elem_submit.click()
         else:
             raise ValueError('"user" cannot be empty')
 
-        elem_user = self.driver.find_element_by_xpath('html/body/table[1]/tbody/tr/td[2]/a')
-        elem_user.click()
+        try:
+            elem_star = self.driver.find_element_by_class_name('star_detail')
+            elem_star.find_element_by_class_name('name_txt').click()
+        except:
+            raise ('Cannot find the user')
+
+        windows = self.driver.window_handles
+        # Close last tab
+        self.driver.switch_to.window(windows[0])
+        self.driver.close()
 
     def search_weibo(self, weibo=None):
         if not weibo:
@@ -116,15 +124,27 @@ class SinaWeibo(object):
         pass
 
     def _sort_by_likes(self):
-        self.driver = webdriver.Firefox()
-        self.driver.get('http://weibo.com/')
-        elem_user = self.driver.find_element_by_name('username')
-        elem_user.send_keys('13652063773')
-        elem_password = self.driver.find_element_by_name('password')
-        elem_password.send_keys('4372125')
-        elem_submit = self.driver.find_element_by_class_name('W_btn_a')
-        elem_submit.click()
 
-        # TODO Searching
+
+        windows = self.driver.window_handles
+        if len(windows) == 1:
+            elem_submit.click()
+            new_window = self.driver.window_handles[-1]
+            self.driver.switch_to.window(new_window)
+        if len(windows) > 1:
+            current_window = self.driver.current_window_handle
+            current_window_pos = [i for i, x in enumerate(windows)
+                                  if x == current_window]
+            elem_submit.click()
+            new_window = windows[current_window_pos + 1]
+
+
+
+
 
         #like_part = self.driver.find_element_by_id('Pl_Official_LikeMerge__16')
+
+
+    def _quit(self):
+        elem_setting = self.driver.find_element_by_class_name('W_ficon')
+        elem_setting.click()
