@@ -82,6 +82,7 @@ class SinaWeibo(object):
         # Close last tab
         self.driver.switch_to.window(windows[0])
         self.driver.close()
+        self.driver.switch_to.window(windows[1])
 
     def search_weibo(self, weibo=None):
         if not weibo:
@@ -124,20 +125,21 @@ class SinaWeibo(object):
         pass
 
     def _sort_by_likes(self):
+        # windows = self.driver.window_handles
+        # if len(windows) == 1:
+        #     new_window = self.driver.window_handles[-1]
+        #     self.driver.switch_to.window(new_window)
+        # elif len(windows) > 1:
+        #     current_window = self.driver.current_window_handle
+        #     current_window_pos = [i for i, x in enumerate(windows)
+        #                           if x == current_window]
+        #     new_window = windows[current_window_pos + 1]
+        #     self.driver.switch_to.window(new_window)
 
-
-        windows = self.driver.window_handles
-        if len(windows) == 1:
-            elem_submit.click()
-            new_window = self.driver.window_handles[-1]
-            self.driver.switch_to.window(new_window)
-        if len(windows) > 1:
-            current_window = self.driver.current_window_handle
-            current_window_pos = [i for i, x in enumerate(windows)
-                                  if x == current_window]
-            elem_submit.click()
-            new_window = windows[current_window_pos + 1]
-
+        elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
+        elem_likes.find_element_by_class_name('more_txt').click()
+        elem_likeswb = self.driver.find_element_by_id('Pl_Core_LikesFeedV6__68')
+        all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
 
 
 
