@@ -132,7 +132,7 @@ class SinaWeibo(object):
 
         elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
         elem_likes.find_element_by_class_name('more_txt').click()
-        elem_likeswb = self.driver.find_element_by_id('Pl_Core_LikesFeedV6__68')
+        elem_likeswb = self.driver.find_element_by_class_name('WB_frame_c')
         elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
         all_likes_wb = elem_all_likes_wb.find_elements_by_xpath('div')
 
@@ -140,29 +140,48 @@ class SinaWeibo(object):
         blogers = []
         homepages = []
         time = []
-        for element in all_likes_wb:
-            class_name = element.find_element_by_xpath('div[1]').get_attribute('class')
-            if class_name == 'WB_empty':
-                deletes += 1
-            elif class_name == 'WB_cardwrap.WB_feed_type.S_bg2':
-                info = element.find_element_by_class_name('W_f14.W_fb.S_txt1')
-                bloger = info.get_attribute('nick-name')
-                page = info.get_attribute('href')
-                blogers.append(bloger)
-                homepages.append(page)
-                pub_time = element.find_element_by_class_name('S_txt2').text
-                if re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time):
-                    m = re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time)
-                    time.append(m.group(0))
-                elif '今天' in pub_time:
-                    date = datetime.datetime.now().strftime("%Y-%m-%d")
-                    time.append(date)
-                elif re.search('([0-9]{1,2})月([0-9]{1,2})日', pub_time):
-                    month, day = re.search('([0-9]{1,2})月([0-9]{1,2})日',
-                                           pub_time).group(1,2)
-                    year = datetime.datetime.now().strftime("%Y")
-                    date = '{0}-{1}-{2}'.format(year, month, day)
-                    time.append(date)
+
+        elem_page = all_likes_wb[-1].find_element_by_xpath('div/span/div/ul/li[1]')
+        page_url = elem_page.get_attribute('href')
+        page_num = int(re.search('page=([0-9]{2})', page_url).group(1))
+
+        for i in range(page_num-1):
+
+            # Scroll down to bottom of a page
+            for i in range(3):
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(3)
+
+            elem_likeswb = self.driver.find_element_by_class_name('WB_frame_c')
+            elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
+            all_likes_wb = elem_all_likes_wb.find_elements_by_xpath('div')
+
+            for element in all_likes_wb[:-1]:
+                class_name = element.find_element_by_xpath('div[1]').get_attribute('class')
+                if class_name == 'WB_empty':
+                    deletes += 1
+                elif class_name == 'WB_cardwrap.WB_feed_type.S_bg2':
+                    info = element.find_element_by_class_name('W_f14.W_fb.S_txt1')
+                    bloger = info.get_attribute('nick-name')
+                    page = info.get_attribute('href')
+                    blogers.append(bloger)
+                    homepages.append(page)
+                    pub_time = element.find_element_by_class_name('S_txt2').text
+                    if re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time):
+                        m = re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time)
+                        time.append(m.group(0))
+                    elif '今天' in pub_time:
+                        date = datetime.datetime.now().strftime("%Y-%m-%d")
+                        time.append(date)
+                    elif re.search('([0-9]{1,2})月([0-9]{1,2})日', pub_time):
+                        month, day = re.search('([0-9]{1,2})月([0-9]{1,2})日',
+                                               pub_time).group(1,2)
+                        year = datetime.datetime.now().strftime("%Y")
+                        date = '{0}-{1}-{2}'.format(year, month, day)
+                        time.append(date)
+
+            # To next page
+            all_likes_wb[-1].find_element_by_xpath('div/a').click()
 
 
 
