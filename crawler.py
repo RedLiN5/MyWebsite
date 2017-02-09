@@ -6,7 +6,12 @@ import re
 import codecs
 import pandas as pd
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import selenium.webdriver.support.ui as ui
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.common.action_chains import ActionChains
+
 
 
 #全局变量 文件操作读写信息
@@ -192,5 +197,6 @@ class SinaWeibo(object):
 
 
     def _quit(self):
-        elem_setting = self.driver.find_element_by_class_name('W_ficon')
-        elem_setting.click()
+        top_menu = self.driver.find_element_by_class_name('gn_set.S_line1')
+        setting = top_menu.find_element_by_xpath('div[2]')
+        # TODO Hover issue
