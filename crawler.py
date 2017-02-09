@@ -30,6 +30,7 @@ class SinaWeibo(object):
             self.driver = webdriver.Firefox()
             self.driver.get('http://weibo.com/')
             elem_user = self.driver.find_element_by_name('username')
+            elem_user.clear()
             elem_user.send_keys('')
             elem_password = self.driver.find_element_by_name('password')
             elem_password.send_keys('')
@@ -65,15 +66,20 @@ class SinaWeibo(object):
         if user:
             elem_input = self.driver.find_element_by_class_name('gn_search_v2')
             elem_keyword = elem_input.find_element_by_xpath('input')
-            elem_keyword.send_keys(user)
             elem_submit = elem_input.find_element_by_xpath('a')
+            time.sleep(3)
+            elem_keyword.send_keys(user)
             elem_submit.click()
+            head_menu = self.driver.find_element_by_class_name('search_head_formbox')
+            search_user = head_menu.find_element_by_xpath('ul/li/a[2]')
+            search_user.click()
         else:
             raise ValueError('"user" cannot be empty')
 
         try:
-            elem_star = self.driver.find_element_by_class_name('star_detail')
-            elem_star.find_element_by_class_name('name_txt').click()
+            elem_user_list = self.driver.find_element_by_class_name('pl_personlist')
+            most_possible = elem_user_list.find_element_by_xpath('div[1]/div[3]/p/a')
+            most_possible.click()
         except:
             raise ('Cannot find the user')
 
