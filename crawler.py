@@ -21,19 +21,22 @@ infofile = codecs.open("SinaWeibo_Info.txt", 'a', 'utf-8')
 class SinaWeibo(object):
 
     def __init__(self):
-        self.driver = webdriver.Firefox()
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {"profile.default_content_setting_values.notifications": 2}
+        chrome_options.add_experimental_option("prefs", prefs)
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
         wait = ui.WebDriverWait(self.driver, 10)
         self.df = pd.DataFrame(columns=['ID', 'UserName'])
 
     def login(self, username, password):
         try:
-            self.driver = webdriver.Firefox()
             self.driver.get('http://weibo.com/')
+            time.sleep(10)
             elem_user = self.driver.find_element_by_name('username')
             elem_user.clear()
-            elem_user.send_keys('')
+            elem_user.send_keys(username)
             elem_password = self.driver.find_element_by_name('password')
-            elem_password.send_keys('')
+            elem_password.send_keys(password)
 
             # img = self.driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
             # src = img.get_attribute('src')
@@ -56,14 +59,13 @@ class SinaWeibo(object):
 
         except Exception as e:
             print('Error:', e)
-        finally:
-            print(u'End LoginWeibo!\n\n')
 
     def search_user(self, user=None):
         if not user:
             raise ValueError('"user" cannot be empty')
 
         if user:
+            print("Start searching user")
             elem_input = self.driver.find_element_by_class_name('gn_search_v2')
             elem_keyword = elem_input.find_element_by_xpath('input')
             elem_submit = elem_input.find_element_by_xpath('a')
