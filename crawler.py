@@ -73,6 +73,7 @@ class SinaWeibo(object):
             time.sleep(3)
             elem_keyword.send_keys(bloger)
             elem_submit.click()
+            print('Move to bloger search')
             head_menu = self.driver.find_element_by_class_name('search_head_formbox')
             search_user = head_menu.find_element_by_xpath('ul/li/a[2]')
             search_user.click()
@@ -87,6 +88,7 @@ class SinaWeibo(object):
         except:
             raise ('Cannot find the user')
 
+        time.sleep(2)
         windows = self.driver.window_handles
         # Close last tab
         self.driver.switch_to.window(windows[0])
@@ -110,7 +112,7 @@ class SinaWeibo(object):
             raise ValueError('"weibo" cannot be empty')
 
     def _following(self):
-        # WAP website can only show 200 followings
+        print("Bloger's homepage")
         ids = []
         usernames = []
         elem_following = self.driver.find_element_by_xpath('html/body/div[2]/div/a[1]')
@@ -149,6 +151,11 @@ class SinaWeibo(object):
 
         elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
         elem_likes.find_element_by_class_name('more_txt').click()
+
+        for i in range(3):
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(3)
+
         elem_likeswb = self.driver.find_element_by_class_name('WB_frame_c')
         elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
         all_likes_wb = elem_all_likes_wb.find_elements_by_xpath('div')
@@ -156,14 +163,11 @@ class SinaWeibo(object):
         deletes = 0
         blogers = []
         homepages = []
-        time = []
+        visittime = []
 
-        elem_page = all_likes_wb[-1].find_element_by_xpath('div/span/div/ul/li[1]')
-        page_url = elem_page.get_attribute('href')
-        page_num = int(re.search('page=([0-9]{2})', page_url).group(1))
+        page_str = all_likes_wb[-1].text
 
-        for i in range(page_num-1):
-
+        while '下一页' in page_str:
             # Scroll down to bottom of a page
             for i in range(3):
                 self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -186,23 +190,25 @@ class SinaWeibo(object):
                     pub_time = element.find_element_by_class_name('S_txt2').text
                     if re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time):
                         m = re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time)
-                        time.append(m.group(0))
+                        visittime.append(m.group(0))
                     elif '今天' in pub_time:
                         date = datetime.datetime.now().strftime("%Y-%m-%d")
-                        time.append(date)
+                        visittime.append(date)
                     elif re.search('([0-9]{1,2})月([0-9]{1,2})日', pub_time):
                         month, day = re.search('([0-9]{1,2})月([0-9]{1,2})日',
                                                pub_time).group(1,2)
                         year = datetime.datetime.now().strftime("%Y")
                         date = '{0}-{1}-{2}'.format(year, month, day)
-                        time.append(date)
+                        visittime.append(date)
+
+            page_str = all_likes_wb[-1].text
 
             # To next page
             all_likes_wb[-1].find_element_by_xpath('div/a').click()
 
-        if len(blogers) == len(homepages) and len(blogers) == len(time):
+        if len(blogers) == len(homepages) == len(visittime):
             self.df['Blogers'] = blogers
-            self.df['PostTime'] = time
+            self.df['PostTime'] = visittime
             self.df['URL'] = homepages
         else:
             raise ('Lengths of "blogers", "homepages" and "time" are not same.')
