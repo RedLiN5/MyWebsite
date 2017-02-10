@@ -26,7 +26,7 @@ class SinaWeibo(object):
         chrome_options.add_experimental_option("prefs", prefs)
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
         wait = ui.WebDriverWait(self.driver, 10)
-        self.df = pd.DataFrame(columns=['ID', 'UserName'])
+        self.df = pd.DataFrame(columns=['Bloger', 'PostTime', 'URL'])
 
     def login(self, username, password):
         try:
@@ -60,17 +60,18 @@ class SinaWeibo(object):
         except Exception as e:
             print('Error:', e)
 
-    def search_user(self, user=None):
-        if not user:
+    def search_bloger(self, bloger=None):
+        self.bloger = bloger
+        if not bloger:
             raise ValueError('"user" cannot be empty')
 
-        if user:
+        if bloger:
             print("Start searching user")
             elem_input = self.driver.find_element_by_class_name('gn_search_v2')
             elem_keyword = elem_input.find_element_by_xpath('input')
             elem_submit = elem_input.find_element_by_xpath('a')
             time.sleep(3)
-            elem_keyword.send_keys(user)
+            elem_keyword.send_keys(bloger)
             elem_submit.click()
             head_menu = self.driver.find_element_by_class_name('search_head_formbox')
             search_user = head_menu.find_element_by_xpath('ul/li/a[2]')
@@ -78,9 +79,10 @@ class SinaWeibo(object):
         else:
             raise ValueError('"user" cannot be empty')
 
+        time.sleep(5)
         try:
             elem_user_list = self.driver.find_element_by_class_name('pl_personlist')
-            most_possible = elem_user_list.find_element_by_xpath('div[1]/div[3]/p/a')
+            most_possible = elem_user_list.find_element_by_xpath('div[1]/div[3]/p/a/em')
             most_possible.click()
         except:
             raise ('Cannot find the user')
@@ -90,6 +92,8 @@ class SinaWeibo(object):
         self.driver.switch_to.window(windows[0])
         self.driver.close()
         self.driver.switch_to.window(windows[1])
+
+        self._sort_by_likes()
 
     def search_weibo(self, weibo=None):
         if not weibo:
@@ -196,8 +200,14 @@ class SinaWeibo(object):
             # To next page
             all_likes_wb[-1].find_element_by_xpath('div/a').click()
 
+        if len(blogers) == len(homepages) and len(blogers) == len(time):
+            self.df['Blogers'] = blogers
+            self.df['PostTime'] = time
+            self.df['URL'] = homepages
+        else:
+            raise ('Lengths of "blogers", "homepages" and "time" are not same.')
 
-
+        self.df.to_csv('{0}_friends.csv'.format(self.bloger))
         #test.send_keys(Keys.COMMAND + Keys.ENTER)
 
 
