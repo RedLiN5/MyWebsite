@@ -181,13 +181,15 @@ class SinaWeibo(object):
                 class_name = element.find_element_by_xpath('div[1]').get_attribute('class')
                 if class_name == 'WB_empty':
                     deletes += 1
-                elif class_name == 'WB_cardwrap.WB_feed_type.S_bg2':
-                    info = element.find_element_by_class_name('W_f14.W_fb.S_txt1')
+                else:
+                    wb_info = element.find_element_by_class_name('WB_info')
+                    info = wb_info.find_element_by_xpath('a')
                     bloger = info.get_attribute('nick-name')
                     page = info.get_attribute('href')
                     blogers.append(bloger)
                     homepages.append(page)
                     pub_time = element.find_element_by_class_name('S_txt2').text
+                    print(pub_time, '\n')
                     if re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time):
                         m = re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time)
                         visittime.append(m.group(0))
@@ -203,17 +205,18 @@ class SinaWeibo(object):
 
             page_str = all_likes_wb[-1].text
 
-            # To next page
-            all_likes_wb[-1].find_element_by_xpath('div/a').click()
+            if '下一页' in page_str:
+                all_likes_wb[-1].find_element_by_xpath('div/a').click()
 
         if len(blogers) == len(homepages) == len(visittime):
             self.df['Blogers'] = blogers
             self.df['PostTime'] = visittime
             self.df['URL'] = homepages
         else:
-            raise ('Lengths of "blogers", "homepages" and "time" are not same.')
+            raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
 
-        self.df.to_csv('{0}_friends.csv'.format(self.bloger))
+        print(self.df)
+        # self.df.to_csv('{0}_friends.csv'.format(self.bloger))
         #test.send_keys(Keys.COMMAND + Keys.ENTER)
 
 
