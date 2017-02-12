@@ -189,8 +189,7 @@ class SinaWeibo(object):
                     page = info.get_attribute('href')
                     blogers.append(bloger)
                     homepages.append(page)
-                    pub_time = element.find_element_by_class_name('S_txt2').text
-                    print(pub_time, '\n')
+                    pub_time = element.find_element_by_class_name('WB_from').text
                     if re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time):
                         m = re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time)
                         visittime.append(m.group(0))
@@ -210,7 +209,7 @@ class SinaWeibo(object):
                 all_likes_wb[-1].find_element_by_xpath('div/a').click()
 
         if len(blogers) == len(homepages) == len(visittime):
-            self.df['Blogers'] = blogers
+            self.df['Bloger'] = blogers
             self.df['PostTime'] = visittime
             self.df['URL'] = homepages
         else:
