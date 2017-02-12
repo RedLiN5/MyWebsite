@@ -215,7 +215,6 @@ class SinaWeibo(object):
         else:
             raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
 
-        print(self.df[:20])
         self.df.to_csv('{0}_friends.csv'.format(self.bloger))
         #test.send_keys(Keys.COMMAND + Keys.ENTER)
 
@@ -225,5 +224,9 @@ class SinaWeibo(object):
 
     def _quit(self):
         top_menu = self.driver.find_element_by_class_name('gn_set.S_line1')
-        setting = top_menu.find_element_by_xpath('div[2]')
+        setting = top_menu.find_element_by_xpath('div[2]/a')
+        hover = ActionChains(self.driver).move_to_element(setting)
+        hover.perform()
+        quit_acc = top_menu.find_element_by_xpath('div[2]/div/ul/li[-1]/a')
+        quit_acc.click()
         # TODO Hover issue
