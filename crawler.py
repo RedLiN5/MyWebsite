@@ -80,6 +80,7 @@ class SinaWeibo(object):
         else:
             raise ValueError('"user" cannot be empty')
 
+
         time.sleep(5)
         try:
             elem_user_list = self.driver.find_element_by_class_name('pl_personlist')
@@ -190,8 +191,8 @@ class SinaWeibo(object):
                     homepages.append(page)
                     pub_time = element.find_element_by_class_name('S_txt2').text
                     print(pub_time, '\n')
-                    if re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time):
-                        m = re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}', pub_time)
+                    if re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time):
+                        m = re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time)
                         visittime.append(m.group(0))
                     elif '今天' in pub_time:
                         date = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -215,8 +216,8 @@ class SinaWeibo(object):
         else:
             raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
 
-        print(self.df)
-        # self.df.to_csv('{0}_friends.csv'.format(self.bloger))
+        print(self.df[:20])
+        self.df.to_csv('{0}_friends.csv'.format(self.bloger))
         #test.send_keys(Keys.COMMAND + Keys.ENTER)
 
 
