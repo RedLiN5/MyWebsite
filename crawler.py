@@ -25,7 +25,6 @@ class SinaWeibo(object):
         prefs = {"profile.default_content_setting_values.notifications": 2}
         chrome_options.add_experimental_option("prefs", prefs)
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
-        wait = ui.WebDriverWait(self.driver, 10)
         self.df = pd.DataFrame(columns=['Bloger', 'PostTime', 'URL'])
 
     def login(self, username, password):
@@ -215,18 +214,15 @@ class SinaWeibo(object):
         else:
             raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
 
-        self.df.to_csv('{0}_friends.csv'.format(self.bloger))
+        self.df.to_csv('{0}_friends.csv'.format(self.bloger),
+                       encoding='utf-8')
         #test.send_keys(Keys.COMMAND + Keys.ENTER)
-
-
-        #like_part = self.driver.find_element_by_id('Pl_Official_LikeMerge__16')
+        self._quit()
 
 
     def _quit(self):
-        top_menu = self.driver.find_element_by_class_name('gn_set.S_line1')
-        setting = top_menu.find_element_by_xpath('div[2]/a')
-        hover = ActionChains(self.driver).move_to_element(setting)
-        hover.perform()
-        quit_acc = top_menu.find_element_by_xpath('div[2]/div/ul/li[-1]/a')
-        quit_acc.click()
-        # TODO Hover issue
+        top_menu = self.driver.find_elements_by_class_name('gn_set_list')
+        setting = top_menu[1]
+        ActionChains(self.driver).move_to_element(setting).perform()
+        click_quit = setting.find_element_by_xpath('div/ul/li[9]')
+        click_quit.click()
