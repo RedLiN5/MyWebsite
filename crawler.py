@@ -177,6 +177,7 @@ class SinaWeibo(object):
             elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
             all_likes_wb = elem_all_likes_wb.find_elements_by_xpath('div')
 
+            print('Collecting data')
             for element in all_likes_wb[:-1]:
                 class_name = element.find_element_by_xpath('div[1]').get_attribute('class')
                 if class_name == 'WB_empty':
@@ -221,8 +222,12 @@ class SinaWeibo(object):
 
 
     def _quit(self):
-        top_menu = self.driver.find_elements_by_class_name('gn_set_list')
-        setting = top_menu[1]
-        ActionChains(self.driver).move_to_element(setting).perform()
-        click_quit = setting.find_element_by_xpath('div/ul/li[9]')
-        click_quit.click()
+        try:
+            top_menu = self.driver.find_elements_by_class_name('gn_set_list')
+            setting = top_menu[1]
+            ActionChains(self.driver).move_to_element(setting).perform()
+            click_quit = setting.find_element_by_xpath('div/ul/li[9]')
+            click_quit.click()
+        except Exception as e:
+            print('Error:', e)
+        self.driver.quit()
