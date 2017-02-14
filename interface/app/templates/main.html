@@ -34,6 +34,27 @@
 
 
     <body>
+        <div class="container-lg clearfix px-3 mt-4">
+            <div class="col-3 float-left pr-3" itemscope itemtype="http://schema.org/Person">
 
+                <div class="user-profile-sticky-bar js-user-profile-sticky-bar">
+                  <div class="user-profile-mini-vcard d-table">
+                    <span class="user-profile-mini-avatar d-table-cell v-align-middle lh-condensed-ultra pr-2">
+                      <img alt="@RedLiN5" class="rounded-1" height="250" src="{{ url_for('static',
+                         filename='images/b72881963fcafd7fd1135eb8.jpg')}}" width="250" />
+                    </span>
+                    <span class="d-table-cell v-align-middle lh-condensed js-user-profile-following-mini-toggle">
+                      <strong>RedLiN5</strong>
+                    </span>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <form action="form_action.asp" method="get">
+          First name: <input type="text" name="fname" />
+          Last name: <input type="text" name="lname" />
+          <input type="submit" value="Submit" />
+        </form>
     </body>
 </html>
