@@ -215,10 +215,10 @@ class SinaWeibo(object):
         else:
             raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
 
-        self.df.to_csv('{0}_friends.csv'.format(self.bloger),
+        self._quit()
+        self.df.to_csv('Friends/{0}_likes.csv'.format(self.bloger),
                        encoding='utf-8')
         #test.send_keys(Keys.COMMAND + Keys.ENTER)
-        self._quit()
 
 
     def _quit(self):
