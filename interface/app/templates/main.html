@@ -8,53 +8,28 @@
         <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
               rel="stylesheet">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <style>
+            body{ text-align:center}
+            #divcss5{margin:0 auto;border:1px solid #000;width:300px;height:100px}
+        </style>
     </head>
 
 
-    <header>
+
+    <body>
         <div class="navbar-header">
             <a class="navbar-brand" href="/">
-                <img sytle="max-width: 120px; margin-top: -7px;"
+                <img style="max-width: 120px; margin-top: -7px;"
                      src="{{ url_for('static',
                          filename='images/favicon.ico')}}">
             </a>
+            <h2 style="text-align:center; display: inline;" >
+                Weibo Searching Engine
+            </h2>
+
         </div>
 
-        <ul class="nav nav-pills" role="tablist">
-            <a href="/dashborad/">
-            <button type="buttion" class="btn btn-primary" aria-label="Left Align"
-                    style="margin-top: 7px; margin-button: 5px; height:44px; margin-right: 15px">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Start Searching
-            </button>
-            </a>
 
 
-        </ul>
-    </header>
-
-
-    <body>
-        <div class="container-lg clearfix px-3 mt-4">
-            <div class="col-3 float-left pr-3" itemscope itemtype="http://schema.org/Person">
-
-                <div class="user-profile-sticky-bar js-user-profile-sticky-bar">
-                  <div class="user-profile-mini-vcard d-table">
-                    <span class="user-profile-mini-avatar d-table-cell v-align-middle lh-condensed-ultra pr-2">
-                      <img alt="@RedLiN5" class="rounded-1" height="250" src="{{ url_for('static',
-                         filename='images/b72881963fcafd7fd1135eb8.jpg')}}" width="250" />
-                    </span>
-                    <span class="d-table-cell v-align-middle lh-condensed js-user-profile-following-mini-toggle">
-                      <strong>RedLiN5</strong>
-                    </span>
-                  </div>
-                </div>
-            </div>
-        </div>
-
-        <form action="form_action.asp" method="get">
-          First name: <input type="text" name="fname" />
-          Last name: <input type="text" name="lname" />
-          <input type="submit" value="Submit" />
-        </form>
     </body>
 </html>
