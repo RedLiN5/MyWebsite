@@ -1,35 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Weibo User Search</title>
-        <meta name="viewport" content="width=device-width,
+<head>
+    <meta charset="UTF-8">
+    <title>Weibo User Search</title>
+    <meta name="viewport" content="width=device-width,
         initial-scale=1">
-        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
-              rel="stylesheet">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <style>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+          rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
             body{ text-align:center}
             #divcss5{margin:0 auto;border:1px solid #000;width:300px;height:100px}
-        </style>
-    </head>
+
+    </style>
+</head>
 
 
-
-    <body>
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">
-                <img style="max-width: 120px; margin-top: -7px;"
-                     src="{{ url_for('static',
+<body>
+<div class="navbar-header">
+    <a class="navbar-brand" href="/">
+        <img style="max-width: 120px; margin-top: -7px;"
+             src="{{ url_for('static',
                          filename='images/favicon.ico')}}">
-            </a>
-            <h2 style="text-align:center; display: inline;" >
-                Weibo Searching Engine
-            </h2>
+    </a>
+    <h2 style="text-align:center; display: inline;">
+        Weibo Searching Engine
+    </h2>
 
+</div>
+
+<div id="start-of-content" class="accessibility-aid"></div>
+
+<div id="js-flash-container"></div>
+
+<div role="main">
+    <div id="js-pjax-container" data-pjax-container>
+        <div class="container-lg clearfix px-3 mt-4">
+            <div class="col-3 float-left pr-3" itemscope itemtype="http://schema.org/Person">
+                <img alt="" class="avatar width-full rounded-2" height="230"
+                     src="https://avatars0.githubusercontent.com/u/14256073?v=3&amp;s=460" width="230"/>
+                <div class="vcard-names-container py-3 js-sticky js-user-profile-sticky-fields ">
+                    <h1 class="vcard-names">
+                        <span class="vcard-fullname d-block" itemprop="name">Leslie_Yan</span>
+                        <span class="vcard-username d-block" itemprop="additionalName">RedLiN5</span>
+                    </h1>
+                </div>
+
+                <ul class="vcard-details border-top border-gray-light py-3">
+                    <li aria-label="Home location" class="vcard-detail pt-1 css-truncate css-truncate-target"
+                        itemprop="homeLocation" title="SH@CN">
+                        <svg aria-hidden="true" class="octicon octicon-location" height="16" version="1.1"
+                             viewBox="0 0 12 16" width="12">
+                            <path fill-rule="evenodd"
+                                  d="M6 0C2.69 0 0 2.5 0 5.5 0 10.02 6 16 6 16s6-5.98 6-10.5C12 2.5 9.31 0 6 0zm0 14.55C4.14 12.52 1 8.44 1 5.5 1 3.02 3.25 1 6 1c1.34 0 2.61.48 3.56 1.36.92.86 1.44 1.97 1.44 3.14 0 2.94-3.14 7.02-5 9.05zM8 5.5c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"/>
+                        </svg>
+                        SH@CN
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-9 float-left pl-2">
+                <div class="user-profile-nav js-sticky top-0"></div>
+            </div>
         </div>
+    </div>
+</div>
 
-
-
-    </body>
+</body>
 </html>
