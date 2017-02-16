@@ -49,14 +49,14 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
 
-  </head>
+</head>
 
 
 <body class="logged-in env-production macintosh page-profile mine">
 
 <div class="header" role="banner">
     <img align="left" style="max-width: 120px; margin-left: 40px"
-         src="{{ url_for('static', filename='images/favicon.ico')}}">
+         src="../static/images/favicon.ico">
     <h2 class="text-center" style="text-align:center; display: inline;">
         Weibo Searching Engine
     </h2>
@@ -73,7 +73,7 @@
         <div class="container-lg clearfix px-3 mt-4">
             <div class="col-3 float-left pr-3" itemscope itemtype="http://schema.org/Person">
                 <img alt="" class="avatar width-full rounded-2" height="230"
-                     src="{{ url_for('static',filename='images/avatar.jpg')}}" width="230"/>
+                     src="../static/images/avatar.jpg" width="230"/>
                 <div class="vcard-names-container py-3 js-sticky js-user-profile-sticky-fields ">
                     <h1 class="vcard-names">
                         <span class="vcard-fullname d-block" itemprop="name">Leslie_Yan</span>
@@ -94,6 +94,6 @@
 
 
 
-<script src="{{ url_for('static',filename='js/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
 </body>
 </html>
