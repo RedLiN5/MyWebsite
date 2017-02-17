@@ -103,6 +103,7 @@ class CollectLikes(object):
 
     def _following(self):
         print("Bloger's homepage")
+        self.bloger_homepage = self.driver.current_url
         ids = []
         usernames = []
         elem_following = self.driver.find_element_by_xpath('html/body/div[2]/div/a[1]')
@@ -210,3 +211,6 @@ class CollectLikes(object):
         except Exception as e:
             print('Error:', e)
         self.driver.quit()
+
+    def get_homepage(self):
+        return self.bloger_homepage
