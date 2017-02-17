@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import requests
 import urllib
 from bs4 import BeautifulSoup
@@ -14,7 +16,8 @@ class CollectWeibo(object):
         self.password = password
 
     def trade_spider(self):
-        columns = ['Investor', 'Investee', 'Industry', 'Date', 'FinancingRound', 'Amount']
+        columns = ['Time', 'Type']
+        # Type includes 'only text', 'photo', 'video' and 'repost'
         df = pd.DataFrame(columns = columns)
         page_num = int(1)
 
