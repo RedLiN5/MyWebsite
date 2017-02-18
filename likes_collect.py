@@ -17,7 +17,12 @@ class CollectLikes(object):
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
         self.df = pd.DataFrame(columns=['Bloger', 'PostTime', 'URL'])
 
-    def login(self, username, password):
+    def login(self, username=None, password=None):
+        if username == None:
+            raise ValueError('"username" cannot be empty')
+        if password == None:
+            raise ValueError('"password" cannot be empty')
+
         try:
             self.driver.get('http://weibo.com/')
             time.sleep(10)
