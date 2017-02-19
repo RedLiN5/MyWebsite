@@ -23,6 +23,9 @@ class CollectLikes(object):
         if password == None:
             raise ValueError('"password" cannot be empty')
 
+        self.username = username
+        self.password = password
+        
         try:
             self.driver.get('http://weibo.com/')
             time.sleep(10)
