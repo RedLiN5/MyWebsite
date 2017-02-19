@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from likes_collect import CollectLikes
 from weibos_collect import CollectWeibo
 
-class SinaWeibo(CollectLikes, CollectWeibo):
+class SinaWeibo(CollectWeibo):
 
     def __init__(self, username=None, password=None, bloger=None, max_page=None):
-        super(CollectLikes, self).__init__()
         super(SinaWeibo, self).__init__(max_page=max_page)
         self.username = username
         self.password = password
