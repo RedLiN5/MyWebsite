@@ -16,16 +16,18 @@ class CollectLikes(object):
         chrome_options.add_experimental_option("prefs", prefs)
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
         self.df = pd.DataFrame(columns=['Bloger', 'PostTime', 'URL'])
+        self.username = None
+        self.password = None
 
     def login(self, username=None, password=None):
-        if username == None:
+        if username is None:
             raise ValueError('"username" cannot be empty')
-        if password == None:
+        if password is None:
             raise ValueError('"password" cannot be empty')
 
         self.username = username
         self.password = password
-        
+
         try:
             self.driver.get('http://weibo.com/')
             time.sleep(10)
