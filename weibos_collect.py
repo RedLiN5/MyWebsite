@@ -27,10 +27,14 @@ class CollectWeibo(CollectLikes):
         m = re.search("/([a-z0-9]+)\?", self.bloger_homepage)
         user_id = m.group(1)
         url_front = 'http://weibo.cn/%d?page=' % (user_id)
-        columns = ['Time', 'Type']
+        columns = ['Time', 'Like', 'Repost', 'Comment']
         # Type includes 'only text', 'photo', 'video' and 'repost'
         df = pd.DataFrame(columns = columns)
         page_num = int(1)
+        pub_times =[]
+        likes = []
+        reposts = []
+        comments = []
 
         while page_num <= self.max_page:
             url = url_front + str(page_num)
@@ -38,15 +42,30 @@ class CollectWeibo(CollectLikes):
             selector = etree.HTML(html)
             items = selector.xpath("//div[@class='c' and @id]")
             num_item = len(items)
-            if num_item > 3:
+            if num_item > 1:
                 for i in range(num_item):
                     item = items[i]
-                    info = item.xpath("div/a")
+                    info = item.xpath("div/a[@href]")[-4:]
+                    pub_info = item.xpath("div/span[@class='ct']")[-1]
+                    try:
+                        m1 = re.search("赞\[([0-9]+)\]",
+                                       info[0].text)
+                        m2 = re.search("转发\[([0-9]+)\]",
+                                       info[1].text)
+                        m3 = re.search("评论\[([0-9]+)\]",
+                                       info[2].text)
+                        like = m1.group(1)
+                        repost = m2.group(1)
+                        comment = m3.group(1)
+                        pub_time = pub_info.text
+                        # '今天 10:05\xa0来自胖哥杨力的iPhone 7 Plus'
+                        likes.append(like)
+                        reposts.append(repost)
+                        comments.append(comment)
+                        pub_times.append(pub_time)
 
-
-
-
-
+                    except Exception as e:
+                        print(e)
 
             page_num += 1
 
