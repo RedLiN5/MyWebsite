@@ -10,6 +10,8 @@ import time
 import datetime
 import pandas as pd
 import numpy as np
+import glob
+import os
 import sys
 from likes_collect import CollectLikes
 
@@ -82,5 +84,9 @@ class CollectWeibo(CollectLikes):
             page_num += 1
         df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]),
                           columns = columns)
-        df.to_csv('data/{0}_weibos.csv'.format(self.bloger),
+        file_name = 'data/{0}_weibos.csv'.format(self.bloger)
+        exist_files = glob.glob('*.csv')
+        if file_name in exist_files:
+            os.remove(file_name)
+        df.to_csv(file_name, sep=',',
                   encoding='utf-8')
