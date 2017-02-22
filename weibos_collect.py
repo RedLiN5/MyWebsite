@@ -7,7 +7,9 @@ from bs4 import BeautifulSoup
 from lxml import etree
 import re
 import time
+import datetime
 import pandas as pd
+import numpy as np
 import sys
 from likes_collect import CollectLikes
 
@@ -27,11 +29,10 @@ class CollectWeibo(CollectLikes):
         m = re.search("/([a-z0-9]+)\?", self.bloger_homepage)
         user_id = m.group(1)
         url_front = 'http://weibo.cn/%d?page=' % (user_id)
-        columns = ['Time', 'Like', 'Repost', 'Comment']
+        columns = ['Date', 'Like', 'Repost', 'Comment']
         # Type includes 'only text', 'photo', 'video' and 'repost'
-        df = pd.DataFrame(columns = columns)
         page_num = int(1)
-        pub_times =[]
+        pub_dates =[]
         likes = []
         reposts = []
         comments = []
@@ -62,13 +63,24 @@ class CollectWeibo(CollectLikes):
                         likes.append(like)
                         reposts.append(repost)
                         comments.append(comment)
-                        pub_times.append(pub_time)
+                        if re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time):
+                            m = re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time)
+                            pub_dates.append(m.group(0))
+                        elif '今天' in pub_time:
+                            date = datetime.datetime.now().strftime("%Y-%m-%d")
+                            pub_dates.append(date)
+                        elif re.search('([0-9]{1,2})月([0-9]{1,2})日', pub_time):
+                            month, day = re.search('([0-9]{1,2})月([0-9]{1,2})日',
+                                                   pub_time).group(1, 2)
+                            year = datetime.datetime.now().strftime("%Y")
+                            date = '{0}-{1}-{2}'.format(year, month, day)
+                            pub_dates.append(date)
 
                     except Exception as e:
                         print(e)
 
             page_num += 1
-
-
-            # except Exception as e:
-            #     print(e)
+        df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]),
+                          columns = columns)
+        df.to_csv('data/{0}_weibos.csv'.format(self.bloger),
+                  encoding='utf-8')
