@@ -84,9 +84,9 @@ class CollectWeibo(CollectLikes):
             page_num += 1
         df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]),
                           columns = columns)
-        file_name = 'data/{0}_weibos.csv'.format(self.bloger)
-        exist_files = glob.glob('*.csv')
+        file_name = '{0}_weibos.csv'.format(self.bloger)
+        exist_files = glob.glob('data/*.csv')
         if file_name in exist_files:
-            os.remove(file_name)
-        df.to_csv(file_name, sep=',',
+            os.remove('data/'+file_name)
+        df.to_csv('data/'+file_name, sep=',',
                   encoding='utf-8')
