@@ -3,6 +3,8 @@
 import time
 import datetime
 import re
+import os
+import glob
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -206,8 +208,12 @@ class CollectLikes(object):
             raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
 
         self._quit()
-        self.df.to_csv('Friends/{0}_likes.csv'.format(self.bloger),
-                       encoding='utf-8')
+        file_name = '{0}_likes.csv'.format(self.bloger)
+        exist_files = glob.glob('data/*.csv')
+        if file_name in exist_files:
+            os.remove('data/'+file_name)
+        self.df.to_csv('data/'+file_name, sep=',',
+                  encoding='utf-8')
         #test.send_keys(Keys.COMMAND + Keys.ENTER)
 
 
