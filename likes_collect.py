@@ -114,8 +114,6 @@ class CollectLikes(object):
             raise ValueError('"weibo" cannot be empty')
 
     def _following(self):
-        print("Bloger's homepage")
-        self.bloger_homepage = self.driver.current_url
         ids = []
         usernames = []
         elem_following = self.driver.find_element_by_xpath('html/body/div[2]/div/a[1]')
@@ -141,6 +139,8 @@ class CollectLikes(object):
         pass
 
     def _sort_by_likes(self):
+        print("Move to bloger's likes")
+        self.bloger_page = self.driver.current_url
         elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
         elem_likes.find_element_by_class_name('more_txt').click()
 
@@ -158,6 +158,7 @@ class CollectLikes(object):
         visittime = []
 
         page_str = all_likes_wb[-1].text
+        current_page = 1
 
         while '下一页' in page_str:
             # Scroll down to bottom of a page
@@ -196,6 +197,8 @@ class CollectLikes(object):
                         visittime.append(date)
 
             page_str = all_likes_wb[-1].text
+            print("Finished crawling page %d" % (current_page))
+            current_page += 1
 
             if '下一页' in page_str:
                 all_likes_wb[-1].find_element_by_xpath('div/a').click()
@@ -225,7 +228,7 @@ class CollectLikes(object):
             click_quit = setting.find_element_by_xpath('div/ul/li[9]')
             click_quit.click()
         except Exception as e:
-            print('Error:', e)
+            print('Error:', 'Quit button cannot be found.', '\n', e)
         self.driver.quit()
 
     def get_homepage(self):
