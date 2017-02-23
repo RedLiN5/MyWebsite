@@ -13,3 +13,4 @@ class SinaWeibo(CollectWeibo):
     def run(self):
         self.login(username=self.username, password=self.password)
         self.search_bloger(bloger=self.bloger)
+        self.get_weibo()
