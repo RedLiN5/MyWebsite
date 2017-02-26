@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import requests
-from urllib.request import Request
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
 from lxml import etree
 import re
-import time
 import datetime
 import pandas as pd
 import numpy as np
 import glob
 import os
-import sys
 from likes_collect import CollectLikes
 
 
