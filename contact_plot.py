@@ -8,6 +8,12 @@ class ContactPlot(SinaWeibo):
         super(ContactPlot, self).__init__()
 
     def _read_data(self):
-        df = pd.read_table('data/{0}_weibos.csv'%{self.bloger},
+        df = pd.read_table('data/{0}_likes.csv'%{self.bloger},
                            sep=',', header=0, index_col=0)
+        return df
+
+    def _elim_own(self):
+        df = self._read_data()
+        pos = df.Bloger != self.nickname
+        df = df.loc[pos]
         return df
