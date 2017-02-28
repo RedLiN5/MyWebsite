@@ -3,7 +3,10 @@ import pandas as pd
 from crawler import SinaWeibo
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from datetime import datetime
+import seaborn as sns
+
 
 class WeiboPlot(SinaWeibo):
 
@@ -33,20 +36,21 @@ class WeiboPlot(SinaWeibo):
 
     def weibo_records_plot(self):
         df = self._read_data()
-        df['Date'] = np.array(list(map(lambda x: datetime.strptime(x, "%Y-%m-%d"),
-                                       df.index)))
+        # df['Date'] = np.array(list(map(lambda x: datetime.strptime(x, "%Y-%m-%d"),
+        #                                df.index)))
         df_info = df.groupby(['Date']).sum()
+        table = df_info.stack().reset_index()
+        table.columns = ['Date', 'Kind', 'Num']
+        table['Date'] = np.array(list(map(lambda x: datetime.strptime(x, "%Y-%m-%d"),
+                                          table.Date)))
+        table['Subject'] = np.ones(table.shape[0])
         fig = plt.figure(figsize=(20, 9))
         ax = fig.add_subplot(111)
-        ax.plot(df_info.index,
-                df_info.Like,
-                'c.-')
-        ax.plot(df_info.index,
-                df_info.Comment,
-                'g.-')
-        ax.plot(df_info.index,
-                df_info.Repost,
-                'm.-')
+        sns.set_style("whitegrid")
+        sns.tsplot(data=table, time='Date',
+                        condition='Kind', unit='Subject', value='Num')
+        ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
         ax.title.set_text('Weibo Records of {0}' % {self.bloger})
         fig.savefig('plots/weibo_records_{0}.png' % {self.bloger},
                     bbox_inches='tight')
