@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 import pandas as pd
-from crawler import SinaWeibo
+from sinaweibo import SinaWeibo
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -54,3 +54,7 @@ class WeiboPlot(SinaWeibo):
         ax.title.set_text('Weibo Records of {0}' % {self.bloger})
         fig.savefig('plots/weibo_records_{0}.png' % {self.bloger},
                     bbox_inches='tight')
+
+    def start(self):
+        self.weibo_trend_plot()
+        self.weibo_records_plot()
