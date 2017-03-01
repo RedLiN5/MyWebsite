@@ -1,11 +1,10 @@
 # -*- encoding: utf-8 -*-
 import pandas as pd
-from crawler import SinaWeibo
 
-class ContactPlot(SinaWeibo):
+class ContactPlot(object):
 
-    def __init__(self):
-        super(ContactPlot, self).__init__()
+    def __init__(self, bloger=None, nickname=None):
+        self.bloger = bloger
 
     def _read_data(self):
         df = pd.read_table('data/{0}_likes.csv'%{self.bloger},
