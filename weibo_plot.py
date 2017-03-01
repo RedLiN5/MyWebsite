@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 import pandas as pd
-from sinaweibo import SinaWeibo
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -8,10 +7,10 @@ from datetime import datetime
 import seaborn as sns
 
 
-class WeiboPlot(SinaWeibo):
+class WeiboPlot(object):
 
-    def __init__(self):
-        super(WeiboPlot, self).__init__()
+    def __init__(self, bloger=None):
+        self.bloger=bloger
 
     def _read_data(self):
         df = pd.read_table('data/{0}_weibos.csv'%{self.bloger},
