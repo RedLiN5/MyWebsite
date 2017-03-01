@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from weibos_collect import CollectWeibo
-from weibo_plot import WeiboPlot
-from contact_plot import ContactPlot
 
 class SinaWeibo(CollectWeibo):
 
@@ -16,4 +14,3 @@ class SinaWeibo(CollectWeibo):
         self.login(username=self.username, password=self.password)
         self.search_bloger(bloger=self.bloger)
         self.get_weibo()
-        WeiboPlot().start()
