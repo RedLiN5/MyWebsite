@@ -12,32 +12,31 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 class CollectLikes(object):
 
-    def __init__(self):
+    def __init__(self, username=None, password=None):
         chrome_options = webdriver.ChromeOptions()
         prefs = {"profile.default_content_setting_values.notifications": 2}
         chrome_options.add_experimental_option("prefs", prefs)
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
         self.df = pd.DataFrame(columns=['Bloger', 'PostTime', 'URL'])
-        self.username = None
-        self.password = None
-
-    def login(self, username=None, password=None):
-        if username is None:
-            raise ValueError('"username" cannot be empty')
-        if password is None:
-            raise ValueError('"password" cannot be empty')
-
         self.username = username
         self.password = password
+        self.bloger = None
+
+    def login(self):
+        if self.username is None:
+            raise ValueError('"username" cannot be empty')
+        if self.password is None:
+            raise ValueError('"password" cannot be empty')
+
 
         try:
             self.driver.get('http://weibo.com/')
             time.sleep(10)
             elem_user = self.driver.find_element_by_name('username')
             elem_user.clear()
-            elem_user.send_keys(username)
+            elem_user.send_keys(self.username)
             elem_password = self.driver.find_element_by_name('password')
-            elem_password.send_keys(password)
+            elem_password.send_keys(self.password)
 
             # img = self.driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
             # src = img.get_attribute('src')
@@ -234,4 +233,4 @@ class CollectLikes(object):
         self.driver.quit()
 
     def get_homepage(self):
-        return self.bloger_homepage
+        return self.bloger_page
