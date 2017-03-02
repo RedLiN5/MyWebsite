@@ -13,8 +13,9 @@ from likes_collect import CollectLikes
 
 class CollectWeibo(CollectLikes):
 
-    def __init__(self, max_page=None):
-        super(CollectWeibo, self).__init__()
+    def __init__(self, max_page=50, username=None, password=None):
+        super(CollectWeibo, self).__init__(username=username,
+                                           password=password)
         self.max_page = max_page
         self.session = requests.Session()
         login_url = "https://passport.weibo.cn/signin/login"
