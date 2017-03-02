@@ -54,6 +54,6 @@ class WeiboPlot(object):
         fig.savefig('plots/weibo_records_{0}.png' % {self.bloger},
                     bbox_inches='tight')
 
-    def start(self):
+    def start_weibo_plot(self):
         self.weibo_trend_plot()
         self.weibo_records_plot()
