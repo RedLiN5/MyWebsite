@@ -9,39 +9,48 @@
 
 
     <title>Portfolio Item - Start Bootstrap Template</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link href="{{ url_for('static', filename='css/portfolio-item.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link href="{{ url_for('static', filename='css/index_portfolio.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/index_portfolio.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
     <style type="text/css">
       body{padding:50px 0 0 0;}
     </style>
 </head>
 
 <body>
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-           　<!-- .navbar-toggle样式用于toggle收缩的内容，即nav-collapse collapse样式所在元素 -->
-             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-               <span class="sr-only">Toggle Navigation</span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-             </button>
-             <!-- 确保无论是宽屏还是窄屏，navbar-brand都显示 -->
-             <a href="#" class="navbar-brand"></strong>L</strong></a>
-        </div>
-        <!-- 屏幕宽度小于768px时，div.navbar-responsive-collapse容器里的内容都会隐藏，显示icon-bar图标，当点击icon-bar图标时，再展开。屏幕大于768px时，默认显示。 -->
-        <div class="collapse navbar-collapse navbar-responsive-collapse">
-          	<ul class="nav navbar-nav">
-            		<li class="active"><a href="##">Homepage</a></li>
-            		<li><a href="##">XXXXX</a></li>
-            		<li><a href="##">XXXXX</a></li>
-            		<li><a href="##">XXXXX</a></li>
-            		<li><a href="##">XXXXX</a></li>
-      	 	</ul>
-        </div>
-    </div>
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Start Bootstrap</a>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                  <li>
+                      <a href="#">About</a>
+                  </li>
+                  <li>
+                      <a href="#">Services</a>
+                  </li>
+                  <li>
+                      <a href="#">Contact</a>
+                  </li>
+              </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container -->
+  </nav>
 
     <!-- Page Content -->
     <div class="container">
