@@ -12,7 +12,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 class CollectLikes(object):
 
-    def __init__(self, username=None, password=None):
+    def __init__(self, username=None, password=None, bloger=None):
         chrome_options = webdriver.ChromeOptions()
         prefs = {"profile.default_content_setting_values.notifications": 2}
         chrome_options.add_experimental_option("prefs", prefs)
@@ -20,7 +20,7 @@ class CollectLikes(object):
         self.df = pd.DataFrame(columns=['Bloger', 'PostTime', 'URL'])
         self.username = username
         self.password = password
-        self.bloger = None
+        self.bloger = bloger
 
     def login(self):
         if self.username is None:
@@ -60,18 +60,17 @@ class CollectLikes(object):
         except Exception as e:
             print('Error:', e)
 
-    def search_bloger(self, bloger=None):
-        self.bloger = bloger
-        if not bloger:
+    def get_likes(self):
+        if not self.bloger:
             raise ValueError('"user" cannot be empty')
 
-        if bloger:
+        if self.bloger:
             print("Start searching user")
             elem_input = self.driver.find_element_by_class_name('gn_search_v2')
             elem_keyword = elem_input.find_element_by_xpath('input')
             elem_submit = elem_input.find_element_by_xpath('a')
             time.sleep(3)
-            elem_keyword.send_keys(bloger)
+            elem_keyword.send_keys(self.bloger)
             elem_submit.click()
             print('Move to bloger search')
             head_menu = self.driver.find_element_by_class_name('search_head_formbox')
