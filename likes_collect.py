@@ -8,7 +8,7 @@ import glob
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
-
+from pymongo import MongoClient
 
 class CollectLikes(object):
 
@@ -219,6 +219,11 @@ class CollectLikes(object):
                   encoding='utf-8')
         #test.send_keys(Keys.COMMAND + Keys.ENTER)
 
+    def _to_mongodb(self):
+        client = MongoClient('localhost', 27017)
+        db = client['test-database']
+        collection = db.collection
+        collection.insert_many(self.df.to_dict('records'))
 
     def _quit(self):
         try:
