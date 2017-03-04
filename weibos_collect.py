@@ -9,7 +9,7 @@ import numpy as np
 import glob
 import os
 from likes_collect import CollectLikes
-
+from pymongo import MongoClient
 
 class CollectWeibo(CollectLikes):
 
@@ -82,11 +82,17 @@ class CollectWeibo(CollectLikes):
 
             page_num += 1
 
-        df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]).T,
+        self.df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]).T,
                           columns = columns)
         file_name = '{0}_weibos.csv'.format(self.bloger)
         exist_files = glob.glob('data/*.csv')
         if file_name in exist_files:
             os.remove('data/'+file_name)
-        df.to_csv('data/'+file_name, sep=',',
+        self.df.to_csv('data/'+file_name, sep=',',
                   encoding='utf-8')
+
+    def _to_mongodb(self):
+        client = MongoClient('localhost', 27017)
+        db = client['test-database']
+        collection = db.collection
+        collection.insert_many(self.df.to_dict('records'))
