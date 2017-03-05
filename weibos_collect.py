@@ -24,7 +24,7 @@ class CollectWeibo(CollectLikes):
         login_url = "https://passport.weibo.cn/signin/login"
         login_data = {'loginName': self.username, 'loginPassword': self.password}
         r = self.session.post(login_url, data=login_data)
-        self.mycookie = {'Cookie': "SCF=AgtJ6pMqTyS7u12WKayQXv_VFZGcDVVO_7HYTuMX6ACwwIYp7ap0x5ovMiEC1J8GthL08KjyL_ymUS4WEFSCFH4.; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W5q0efpquglaB-ZV4xVgDQ-5JpX5o2p5NHD95QE1K.XSo.Neh-7Ws4DqcjTKsH0dsLLPfv9qgRt; _T_WM=b395d1dd6157cb28a2817c7a240b2ef0; SUHB=0RyaarKRUajzb4; SUB=_2A251quLdDeRxGeRH4lYX-SnMzjyIHXVXVI6VrDV6PUJbkdANLVPRkW0QtwhTADSjdCk-WA1PydXES1ECRA..; gsid_CTandWM=4uQA6d841iOYPigpzecnpcz3z0O; PHPSESSID=d8916715880a879aef1fe21ce38ed692"}
+        self.mycookie = {'Cookie': "SCF=AgtJ6pMqTyS7u12WKayQXv_VFZGcDVVO_7HYTuMX6ACwwIYp7ap0x5ovMiEC1J8GthL08KjyL_ymUS4WEFSCFH4.; _T_WM=b395d1dd6157cb28a2817c7a240b2ef0; SUHB=0RyaarKRUajzb4; SUB=_2A251uEE_DeRxGeRH4lYX-SnMzjyIHXVXQ293rDV6PUJbkdANLRekkW1g_kCKqQq_1dU5dRRwTnZWE_Jzig..; gsid_CTandWM=4upj6d841rKi4ANUK80Gecz3z0O; PHPSESSID=9386ff38bcca2583d11b37aac80a27f7"}
 
     def get_weibo(self):
         m = re.search("/([a-z0-9]+)\?", self.bloger_page)
