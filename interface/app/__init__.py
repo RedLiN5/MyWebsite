@@ -22,13 +22,17 @@ def search():
         if request.method == 'POST':
             username = request.form['username']
             print(username)
-            return render_template('/weibo/search_user.html')
+            plot_name = 'weibo_likes_胖哥杨力.png'
+            return render_template('weibo/search_result.html', plotname = plot_name)
         return render_template('/weibo/search_user.html')
     except Exception as e:
         flash(e)
         return render_template('/weibo/search_user.html', error=error)
 
-
+@app.route('/search/result')
+def search_result():
+    name = '胖哥杨力'
+    return render_template('weibo/search_result.html', name=name)
 
 
 if __name__ == '__main__':
