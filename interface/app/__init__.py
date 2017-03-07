@@ -21,19 +21,21 @@ def search():
     try:
         if request.method == 'POST':
             username = request.form['username']
-            print(username)
-            plot_name = 'weibo_likes_胖哥杨力.png'
-            return render_template('weibo/search_result.html', plotname = plot_name)
-        return render_template('/weibo/search_user.html')
+            print(username == '')
+            if username != '':
+                likes_dir = 'plots/weibo_likes_{0}.png'.format(username)
+                return render_template('weibo/search_result.html', likes_dir = likes_dir)
+            else:
+                flash('\"Username\" cannot be empty!', category='warning')
+                return render_template('weibo/search.html')
+        return render_template('weibo/search.html')
     except Exception as e:
         flash(e)
-        return render_template('/weibo/search_user.html', error=error)
-
-@app.route('/search/result')
-def search_result():
-    name = '胖哥杨力'
-    return render_template('weibo/search_result.html', name=name)
+        return render_template('weibo/search.html', error=error)
 
 
 if __name__ == '__main__':
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.debug = True
     app.run()
