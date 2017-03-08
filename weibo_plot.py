@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from datetime import datetime
 import seaborn as sns
+import glob
+import os
 
 
 class WeiboPlot(object):
@@ -13,7 +15,7 @@ class WeiboPlot(object):
         self.bloger=bloger
 
     def _read_data(self):
-        df = pd.read_table('data/{0}_weibos.csv'%{self.bloger},
+        df = pd.read_table('data/{0}_weibos.csv'.format(self.bloger),
                            sep=',', header=0, index_col=0)
         return df
 
@@ -29,12 +31,17 @@ class WeiboPlot(object):
         ax.plot(df_count.Date,
                 df_count.Count,
                 'c.-')
-        ax.title.set_text('Weibo Trend of {0}'%{self.bloger})
-        fig.savefig('plots/weibo_trend_{0}.png'%{self.bloger},
+        ax.title.set_text('Weibo Trend of {0}'.format(self.bloger))
+        fig.savefig('plots/weibo_trend_{0}.png'.format(self.bloger),
                     bbox_inches='tight')
 
     def weibo_records_plot(self):
         df = self._read_data()
+        file_name = 'weibo_records_{0}.png'.format(self.bloger)
+        exist_files_dir = glob.glob('interface/app/static/plots/*.png')
+        exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
+        if file_name in exist_files:
+            os.remove('interface/app/static/plots/' + file_name)
         # df['Date'] = np.array(list(map(lambda x: datetime.strptime(x, "%Y-%m-%d"),
         #                                df.index)))
         df_info = df.groupby(['Date']).sum()
@@ -50,8 +57,8 @@ class WeiboPlot(object):
                         condition='Kind', unit='Subject', value='Num')
         ax.xaxis.set_major_locator(mdates.AutoDateLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-        ax.title.set_text('Weibo Records of {0}' % {self.bloger})
-        fig.savefig('plots/weibo_records_{0}.png' % {self.bloger},
+        ax.title.set_text('Weibo Records of {0}'.format(self.bloger))
+        fig.savefig('interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
 
     def start_weibo_plot(self):
