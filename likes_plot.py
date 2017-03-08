@@ -8,7 +8,7 @@ import glob
 import os
 
 
-class ContactPlot(object):
+class LikesPlot(object):
 
     def __init__(self, bloger=None, nickname=None):
         self.bloger = bloger
@@ -33,7 +33,7 @@ class ContactPlot(object):
                                       ascending=False).reset_index(drop=True)
         return df_plot
 
-    def start_contact_plot(self):
+    def start_likes_plot(self):
         df_plot = self._sort()
         file_name = 'weibo_likes_{0}.png' % {self.bloger}
         exist_files_dir = glob.glob('interface/app/static/plots/*.png')
