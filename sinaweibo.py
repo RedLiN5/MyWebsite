@@ -15,6 +15,7 @@ class SinaWeibo(CollectWeibo, LikesPlot, WeiboPlot):
         WeiboPlot.__init__(self)
         self.username = username
         self.password = password
+        self.bloger = bloger
 
     def run(self):
         self.login()
