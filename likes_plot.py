@@ -44,8 +44,9 @@ class LikesPlot(object):
         upper = max(df_plot.num)
         mpl.rcParams['font.sans-serif'] = ['SimHei']
         mpl.rcParams['font.serif'] = ['SimHei']
-        sns.set_style("darkgrid", {"font.sans-serif": ['simhei', 'Arial']})
-        f, ax = plt.subplots(figsize=(6, 15))
+        sns.set_style("white", {"font.sans-serif": ['simhei', 'Arial']})
+        f, ax = plt.subplots(figsize=(3, 7), dpi=100)
+        ax = f.add_subplot(111)
         sns.set_color_codes("pastel")
         sns.barplot(x="num", y="bloger", data=df_plot,
                     label="博主的赞", color="b")
