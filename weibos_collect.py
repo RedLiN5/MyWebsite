@@ -81,6 +81,7 @@ class CollectWeibo(object):
 
         self.df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]).T,
                           columns = columns)
+        self.nickname = nickname
         file_name = '{0}_weibos.csv'.format(nickname)
         exist_files = glob.glob('data/*.csv')
         if file_name in exist_files:
@@ -90,6 +91,6 @@ class CollectWeibo(object):
 
     def _to_mongodb(self):
         client = MongoClient('localhost', 27017)
-        db = client['test-database']
-        collection = db.collection
+        db = client['weibo']
+        collection = eval('db.'+self.nickname+'_weibos')
         collection.insert_many(self.df.to_dict('records'))

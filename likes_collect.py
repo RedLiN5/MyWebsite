@@ -221,8 +221,8 @@ class CollectLikes(object):
 
     def _to_mongodb(self):
         client = MongoClient('localhost', 27017)
-        db = client['test-database']
-        collection = db.collection
+        db = client['weibo']
+        collection = eval('db.'+self.nickname+'_likes')
         collection.insert_many(self.df.to_dict('records'))
 
     def _quit(self):
