@@ -11,23 +11,20 @@ import os
 from likes_collect import CollectLikes
 from pymongo import MongoClient
 
-class CollectWeibo(CollectLikes):
+class CollectWeibo(object):
 
-    def __init__(self, max_page=50, username=None,
-                 password=None, bloger=None):
-        super(CollectWeibo, self).__init__(username=username,
-                                           password=password,
-                                           bloger=bloger)
+    def __init__(self, username=None, password=None,
+                 max_page=50, bloger=None):
         self.max_page = max_page
         self.bloger = bloger
         self.session = requests.Session()
         login_url = "https://passport.weibo.cn/signin/login"
-        login_data = {'loginName': self.username, 'loginPassword': self.password}
+        login_data = {'loginName': username, 'loginPassword': password}
         r = self.session.post(login_url, data=login_data)
-        self.mycookie = {'Cookie': "SCF=AgtJ6pMqTyS7u12WKayQXv_VFZGcDVVO_7HYTuMX6ACwwIYp7ap0x5ovMiEC1J8GthL08KjyL_ymUS4WEFSCFH4.; _T_WM=b395d1dd6157cb28a2817c7a240b2ef0; SUHB=0RyaarKRUajzb4; SUB=_2A251uEE_DeRxGeRH4lYX-SnMzjyIHXVXQ293rDV6PUJbkdANLRekkW1g_kCKqQq_1dU5dRRwTnZWE_Jzig..; gsid_CTandWM=4upj6d841rKi4ANUK80Gecz3z0O; PHPSESSID=9386ff38bcca2583d11b37aac80a27f7"}
+        self.mycookie = {'Cookie': "SCF=AgtJ6pMqTyS7u12WKayQXv_VFZGcDVVO_7HYTuMX6ACwwIYp7ap0x5ovMiEC1J8GthL08KjyL_ymUS4WEFSCFH4.; _T_WM=b395d1dd6157cb28a2817c7a240b2ef0; SUHB=0RyaarKRUajzb4; SUB=_2A251xifSDeRxGeRH4lYX-SnMzjyIHXVXSUmarDV6PUJbkdANLW7CkW1JZpkT9n0Zeh6MKIAzk9yRSGynxw..; gsid_CTandWM=4utJ6d841fkKsmaBdcTBBcz3z0O; PHPSESSID=9a8491196dc073a9c4c8e49a25a8bc6f"}
 
-    def get_weibo(self):
-        m = re.search("/([a-z0-9]+)\?", self.bloger_page)
+    def get_weibo(self, bloger_page=None, nickname=None):
+        m = re.search("/([a-z0-9]+)\?", bloger_page)
         user_id = m.group(1)
         url_front = 'http://weibo.cn/%s?page=' % (user_id)
         columns = ['Date', 'Like', 'Repost', 'Comment']
@@ -84,7 +81,7 @@ class CollectWeibo(CollectLikes):
 
         self.df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]).T,
                           columns = columns)
-        file_name = '{0}_weibos.csv'.format(self.bloger)
+        file_name = '{0}_weibos.csv'.format(nickname)
         exist_files = glob.glob('data/*.csv')
         if file_name in exist_files:
             os.remove('data/'+file_name)
