@@ -12,11 +12,11 @@ import os
 
 class WeiboPlot(object):
 
-    def __init__(self, bloger=None):
-        self.bloger=bloger
+    def __init__(self, nickname=None):
+        self.nickname = nickname
 
     def _read_data(self):
-        df = pd.read_table('data/{0}_weibos.csv'.format(self.bloger),
+        df = pd.read_table('data/{0}_weibos.csv'.format(self.nickname),
                            sep=',', header=0, index_col=0)
         return df
 
@@ -28,7 +28,7 @@ class WeiboPlot(object):
         df_count['Date'] = np.array(list(map(lambda x: datetime.strptime(x, "%Y-%m-%d"),
                                              df_count.index)))
 
-        file_name = 'weibo_trend_{0}.png'.format(self.bloger)
+        file_name = 'weibo_trend_{0}.png'.format(self.nickname)
         exist_files_dir = glob.glob('interface/app/static/plots/*.png')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
@@ -44,13 +44,13 @@ class WeiboPlot(object):
         ax.plot(df_count.Date,
                 df_count.Count,
                 'c.-')
-        ax.title.set_text('Weibo Trend of {0}'.format(self.bloger))
+        ax.title.set_text('Weibo Trend of {0}'.format(self.nickname))
         fig.savefig('interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
 
     def weibo_records_plot(self):
         df = self._read_data()
-        file_name = 'weibo_records_{0}.png'.format(self.bloger)
+        file_name = 'weibo_records_{0}.png'.format(self.nickname)
         exist_files_dir = glob.glob('interface/app/static/plots/*.png')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
@@ -71,7 +71,7 @@ class WeiboPlot(object):
                    condition='Kind', unit='Subject', value='Num')
         ax.xaxis.set_major_locator(mdates.AutoDateLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-        ax.title.set_text('Weibo Records of {0}'.format(self.bloger))
+        ax.title.set_text('Weibo Records of {0}'.format(self.nickname))
         fig.savefig('interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
 

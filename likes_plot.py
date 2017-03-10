@@ -10,12 +10,11 @@ import os
 
 class LikesPlot(object):
 
-    def __init__(self, bloger=None, nickname=None):
-        self.bloger = bloger
+    def __init__(self, nickname=None):
         self.nickname = nickname
 
     def _read_data(self):
-        df = pd.read_table('data/{0}_likes.csv'%{self.bloger},
+        df = pd.read_table('data/{0}_likes.csv'%{self.nickname},
                            sep=',', header=0, index_col=0)
         return df
 
@@ -35,7 +34,7 @@ class LikesPlot(object):
 
     def start_likes_plot(self):
         df_plot = self._sort()
-        file_name = 'weibo_likes_{0}.png' % {self.bloger}
+        file_name = 'weibo_likes_{0}.png' % {self.nickname}
         exist_files_dir = glob.glob('interface/app/static/plots/*.png')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
