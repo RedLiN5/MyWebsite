@@ -211,7 +211,7 @@ class CollectLikes(object):
             raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
 
         self._quit()
-        file_name = '{0}_likes.csv'.format(self.bloger)
+        file_name = '{0}_likes.csv'.format(self.nickname)
         exist_files = glob.glob('data/*.csv')
         if file_name in exist_files:
             os.remove('data/'+file_name)
