@@ -143,6 +143,8 @@ class CollectLikes(object):
         self.bloger_page = self.driver.current_url
         elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
         elem_likes.find_element_by_class_name('more_txt').click()
+        more_likes = self.driver.find_element_by_xpath("//ul[@class='lev_list']")
+        more_likes.find_element_by_xpath('li[3]/a/span').click()
 
         for i in range(3):
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -201,7 +203,10 @@ class CollectLikes(object):
             current_page += 1
 
             if '下一页' in page_str:
-                all_likes_wb[-1].find_element_by_xpath('div/a').click()
+                if current_page == 1:
+                    all_likes_wb[-1].find_element_by_xpath('div/a').click()
+                else:
+                    all_likes_wb[-1].find_element_by_xpath('div/a[2]').click()
 
         if len(blogers) == len(homepages) == len(visittime):
             self.df['Bloger'] = blogers
