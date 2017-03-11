@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import glob
 import os
+import sys
 from likes_collect import CollectLikes
 from pymongo import MongoClient
 
@@ -21,7 +22,7 @@ class CollectWeibo(object):
         login_url = "https://passport.weibo.cn/signin/login"
         login_data = {'loginName': username, 'loginPassword': password}
         r = self.session.post(login_url, data=login_data)
-        self.mycookie = {'Cookie': "SCF=AgtJ6pMqTyS7u12WKayQXv_VFZGcDVVO_7HYTuMX6ACwwIYp7ap0x5ovMiEC1J8GthL08KjyL_ymUS4WEFSCFH4.; _T_WM=b395d1dd6157cb28a2817c7a240b2ef0; SUHB=0RyaarKRUajzb4; SUB=_2A251xifSDeRxGeRH4lYX-SnMzjyIHXVXSUmarDV6PUJbkdANLW7CkW1JZpkT9n0Zeh6MKIAzk9yRSGynxw..; gsid_CTandWM=4utJ6d841fkKsmaBdcTBBcz3z0O; PHPSESSID=9a8491196dc073a9c4c8e49a25a8bc6f"}
+        self.mycookie = {'Cookie': "_T_WM=b395d1dd6157cb28a2817c7a240b2ef0; ALF=1491819954; SCF=AgtJ6pMqTyS7u12WKayQXv_VFZGcDVVO_7HYTuMX6ACwtukd7er_nmvyEAEu5eweDaO6GJB5JBcw2EFTKVyfOl8.; SUB=_2A251x6CaDeRxGeRH4lYX-SnMzjyIHXVXS8DSrDV6PUJbktBeLXinkW0ZTILxsvUQ03guurNRdrv2HPw94A..; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W5q0efpquglaB-ZV4xVgDQ-5JpX5o2p5NHD95QE1K.XSo.Neh-7Ws4DqcjTKsH0dsLLPfv9qgRt; SUHB=0btMDiT4eEILj6"}
 
     def get_weibo(self, bloger_page=None, nickname=None):
         m = re.search("/([a-z0-9]+)\?", bloger_page)
@@ -76,11 +77,15 @@ class CollectWeibo(object):
 
                     except Exception as e:
                         print(e)
+                        exc_type, exc_obj, exc_tb = sys.exc_info()
+                        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                        print(exc_type, fname, 'line ', exc_tb.tb_lineno)
 
             page_num += 1
 
+        print(np.array([pub_dates, likes, reposts, comments]).shape)
         self.df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]).T,
-                          columns = columns)
+                               columns = columns)
         self.nickname = nickname
         file_name = '{0}_weibos.csv'.format(nickname)
         exist_files = glob.glob('data/*.csv')
