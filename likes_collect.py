@@ -143,12 +143,13 @@ class CollectLikes(object):
         self.bloger_page = self.driver.current_url
         elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
         elem_likes.find_element_by_class_name('more_txt').click()
+        time.sleep(2)
         more_likes = self.driver.find_element_by_xpath("//ul[@class='lev_list']")
         more_likes.find_element_by_xpath('li[3]/a/span').click()
 
-        for i in range(3):
+        for _ in range(3):
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(3)
+            time.sleep(2)
 
         elem_likeswb = self.driver.find_element_by_class_name('WB_frame_c')
         elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
@@ -164,9 +165,9 @@ class CollectLikes(object):
 
         while '下一页' in page_str:
             # Scroll down to bottom of a page
-            for i in range(3):
+            for _ in range(4):
                 self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                time.sleep(3)
+                time.sleep(2)
 
             elem_likeswb = self.driver.find_element_by_class_name('WB_frame_c')
             elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
@@ -200,13 +201,14 @@ class CollectLikes(object):
 
             page_str = all_likes_wb[-1].text
             print("Finished crawling page %d" % (current_page))
-            current_page += 1
 
             if '下一页' in page_str:
                 if current_page == 1:
                     all_likes_wb[-1].find_element_by_xpath('div/a').click()
                 else:
                     all_likes_wb[-1].find_element_by_xpath('div/a[2]').click()
+
+            current_page += 1
 
         if len(blogers) == len(homepages) == len(visittime):
             self.df['Bloger'] = blogers
