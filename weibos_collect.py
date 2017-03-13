@@ -14,17 +14,15 @@ from pymongo import MongoClient
 
 class CollectWeibo(object):
 
-    def __init__(self, username=None, password=None,
-                 max_page=50, bloger=None):
+    def __init__(self, max_page=50, bloger=None):
         self.max_page = max_page
         self.bloger = bloger
-        self.session = requests.Session()
-        login_url = "https://passport.weibo.cn/signin/login"
-        login_data = {'loginName': username, 'loginPassword': password}
-        r = self.session.post(login_url, data=login_data)
-        self.mycookie = {'Cookie': "_T_WM=b395d1dd6157cb28a2817c7a240b2ef0; ALF=1491819954; SCF=AgtJ6pMqTyS7u12WKayQXv_VFZGcDVVO_7HYTuMX6ACwtukd7er_nmvyEAEu5eweDaO6GJB5JBcw2EFTKVyfOl8.; SUB=_2A251x6CaDeRxGeRH4lYX-SnMzjyIHXVXS8DSrDV6PUJbktBeLXinkW0ZTILxsvUQ03guurNRdrv2HPw94A..; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9W5q0efpquglaB-ZV4xVgDQ-5JpX5o2p5NHD95QE1K.XSo.Neh-7Ws4DqcjTKsH0dsLLPfv9qgRt; SUHB=0btMDiT4eEILj6"}
 
-    def get_weibo(self, bloger_page=None, nickname=None):
+    def get_weibo(self, cookie=None, bloger_page=None, nickname=None):
+        if len(cookie['Cookie'])>1:
+            self.mycookie = cookie
+        else:
+            raise ValueError('"cookie" cannot be empty')
         m = re.search("/([a-z0-9]+)\?", bloger_page)
         user_id = m.group(1)
         url_front = 'http://weibo.cn/%s?page=' % (user_id)
