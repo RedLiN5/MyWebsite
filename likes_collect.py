@@ -56,6 +56,8 @@ class CollectLikes(object):
             elem_submit = self.driver.find_element_by_class_name('W_btn_a')
             elem_submit.click()
             time.sleep(2)
+            cookie = [item["name"] + "=" + item["value"] for item in self.driver.get_cookies()]
+            self.mycookie = {'Cookie': '; '.join(cookie)}
 
         except Exception as e:
             print('Error:', e)
