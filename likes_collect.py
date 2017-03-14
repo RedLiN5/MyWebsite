@@ -207,10 +207,13 @@ class CollectLikes(object):
             if '下一页' in page_str:
                 if current_page == 1:
                     all_likes_wb[-1].find_element_by_xpath('div/a').click()
+                elif current_page >10:
+                    break
                 else:
                     all_likes_wb[-1].find_element_by_xpath('div/a[2]').click()
 
             current_page += 1
+
 
         if len(blogers) == len(homepages) == len(visittime):
             self.df['Bloger'] = blogers
