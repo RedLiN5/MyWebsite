@@ -236,11 +236,12 @@ class CollectLikes(object):
 
     def _quit(self):
         try:
-            top_menu = self.driver.find_elements_by_class_name('gn_set_list')
-            setting = top_menu[1]
-            ActionChains(self.driver).move_to_element(setting).perform()
-            click_quit = setting.find_element_by_xpath('div/ul/li[9]')
-            click_quit.click()
+            setting = self.driver.find_element_by_xpath('//*[@id="pl_common_top"]/div/div/div[3]/div[2]/div[2]/a/em')
+            click_quit = self.driver.find_element_by_xpath('//*[@id="pl_common_top"]/div/div/div[3]/div[2]/div[2]/div/ul/li[10]/a')
+            actions = ActionChains(self.driver)
+            actions.move_to_element(setting)
+            actions.click(click_quit)
+            actions.perform()
         except Exception as e:
             print('Error:', 'Quit button cannot be found.', '\n', e)
         self.driver.quit()
