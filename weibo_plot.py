@@ -67,10 +67,13 @@ class WeiboPlot(object):
         plt.xticks(rotation=35)
         ax = fig.add_subplot(111)
         sns.set_style("white")
-        sns.tsplot(data=table, time='Date',
-                   condition='Kind', unit='Subject', value='Num')
-        ax.xaxis.set_major_locator(mdates.AutoDateLocator())
-        ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        g = sns.tsplot(data=table, time='Date',
+                       condition='Kind', unit='Subject',
+                       value='Num')
+        xlabel_date = list(map(lambda x: x.strftime("%Y-%m-%d"), table["Date"].value_counts().index.tolist()))
+        g.set_xticklabels(
+            labels=xlabel_date,
+            rotation=30)
         ax.title.set_text('Weibo Records of {0}'.format(self.nickname))
         fig.savefig('interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
