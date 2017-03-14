@@ -24,7 +24,10 @@ def search():
             print(username == '')
             if username != '':
                 likes_dir = 'plots/weibo_likes_{0}.png'.format(username)
-                return render_template('weibo/search_result.html', likes_dir = likes_dir)
+                trend_dir = 'plots/weibo_trend_{0}.png'.format(username)
+                record_dir = 'plots/weibo_records_{0}.png'.format(username)
+                return render_template('weibo/search_result.html', likes_dir = likes_dir,
+                                       trend_dir= trend_dir, record_dir = record_dir)
             else:
                 flash('\"Username\" cannot be empty!', category='warning')
                 return render_template('weibo/search.html')
