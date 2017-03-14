@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import matplotlib.dates as mdates
 from datetime import datetime
 import seaborn as sns
 import glob
@@ -55,25 +54,24 @@ class WeiboPlot(object):
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
             os.remove('interface/app/static/plots/' + file_name)
-        # df['Date'] = np.array(list(map(lambda x: datetime.strptime(x, "%Y-%m-%d"),
-        #                                df.index)))
+
         df_info = df.groupby(['Date']).sum()
         table = df_info.stack().reset_index()
-        table.columns = ['Date', 'Kind', 'Num']
+        table.columns = ['Date', 'Subject', 'Num']
         table['Date'] = np.array(list(map(lambda x: datetime.strptime(x, "%Y-%m-%d"),
                                           table.Date)))
-        table['Subject'] = np.ones(table.shape[0])
+        table['Unit'] = np.ones(table.shape[0])
         fig = plt.figure(figsize=(7, 3), dpi=100)
-        plt.xticks(rotation=35)
         ax = fig.add_subplot(111)
         sns.set_style("white")
         g = sns.tsplot(data=table, time='Date',
-                       condition='Kind', unit='Subject',
+                       condition='Subject', unit='Unit',
                        value='Num')
-        xlabel_date = list(map(lambda x: x.strftime("%Y-%m-%d"), table["Date"].value_counts().index.tolist()))
-        g.set_xticklabels(
-            labels=xlabel_date,
-            rotation=30)
+        xlabel_date = list(map(lambda x: x.strftime("%Y-%m-%d"),
+                               table["Date"].value_counts().index.tolist()))
+        g.set_xticklabels(labels=xlabel_date,
+                          rotation=30)
+        sns.despine()
         ax.title.set_text('Weibo Records of {0}'.format(self.nickname))
         fig.savefig('interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
