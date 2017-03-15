@@ -30,7 +30,10 @@ class LikesPlot(object):
                                 'num': list(Counter(df.Bloger).values())})
         df_plot = df_plot.sort_values(by='num',
                                       ascending=False).reset_index(drop=True)
-        return df_plot
+        if df_plot.shape[0] <= 30:
+            return df_plot
+        else:
+            return df_plot[:30]
 
     def start_likes_plot(self):
         df_plot = self._sort()
