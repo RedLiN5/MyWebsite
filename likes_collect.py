@@ -214,7 +214,6 @@ class CollectLikes(object):
 
             current_page += 1
 
-
         if len(blogers) == len(homepages) == len(visittime):
             self.df['Bloger'] = blogers
             self.df['PostTime'] = visittime
@@ -228,8 +227,7 @@ class CollectLikes(object):
         if file_name in exist_files:
             os.remove('data/'+file_name)
         self.df.to_csv('data/'+file_name, sep=',',
-                  encoding='utf-8')
-        #test.send_keys(Keys.COMMAND + Keys.ENTER)
+                       encoding='utf-8')
 
     def _to_mongodb(self):
         client = MongoClient('localhost', 27017)
