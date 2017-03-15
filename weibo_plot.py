@@ -55,6 +55,10 @@ class WeiboPlot(object):
         if file_name in exist_files:
             os.remove('interface/app/static/plots/' + file_name)
 
+        mpl.rcParams['font.sans-serif'] = ['SimHei']
+        mpl.rcParams['font.serif'] = ['SimHei']
+        sns.set_style("white", {"font.sans-serif": ['simhei', 'Arial']})
+
         df_info = df.groupby(['Date']).sum()
         table = df_info.stack().reset_index()
         table.columns = ['Date', 'Subject', 'Num']
