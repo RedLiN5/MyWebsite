@@ -7,6 +7,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* The alert message box */
+.alert {
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+
 /* Pen Title */
 .pen-title {
   padding: 50px 0;
@@ -426,6 +451,7 @@ body {
 .card.alt .button-container button:active:before, .card.alt .button-container button:focus:before {
   display: none;
 }
+
 
 /* Keyframes */
 @-webkit-keyframes buttonFadeInUp {
