@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import pandas as pd
+import numpy as np
 from collections import Counter
 import seaborn as sns
 import matplotlib.pyplot as plt
