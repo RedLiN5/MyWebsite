@@ -42,7 +42,8 @@ class WeiboPlot(object):
         sns.despine()
         ax.plot(df_count.Date,
                 df_count.Count,
-                'c.-')
+                'c-',
+                linewidth=2.5)
         ax.title.set_text('Weibo Trend of {0}'.format(self.nickname))
         fig.savefig('interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
@@ -68,9 +69,13 @@ class WeiboPlot(object):
         fig = plt.figure(figsize=(7, 3), dpi=100)
         ax = fig.add_subplot(111)
         sns.set_style("white")
-        g = sns.tsplot(data=table, time='Date',
-                       condition='Subject', unit='Unit',
-                       value='Num')
+        g = sns.tsplot(data=table,
+                       time='Date',
+                       value='Num',
+                       condition='Subject',
+                       unit='Unit',
+                       color=sns.color_palette("Set2", 3)
+                       )
         xlabel_date = list(map(lambda x: x.strftime("%Y-%m-%d"),
                                table["Date"].value_counts().index.tolist()))
         g.set_xticklabels(labels=xlabel_date,
