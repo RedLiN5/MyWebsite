@@ -14,6 +14,15 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/apps_demo')
+def apps_demo():
+    return render_template('apps_demo.html')
+    # TODO (Leslie) Build apps_demo.html
+
+@app.route('/projects_demo')
+def projects_demo():
+    return render_template('projects_demo.html')
+    # TODO (Leslie) Build projects_demo.html
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
