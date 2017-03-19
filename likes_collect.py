@@ -49,6 +49,10 @@ class CollectLikes(object):
         except Exception as e:
             print('Error:', e)
 
+    def collect_weibo_likes(self):
+        pass
+        # TODO Realize it with requests @.com
+
     def get_likes(self):
         if not self.bloger:
             raise ValueError('"user" cannot be empty')
