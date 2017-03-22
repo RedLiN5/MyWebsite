@@ -9,6 +9,7 @@ import numpy as np
 import glob
 import os
 import sys
+import json
 from likes_collect import CollectLikes
 from pymongo import MongoClient
 
@@ -95,5 +96,5 @@ class CollectWeibo(object):
     def _to_mongodb(self):
         client = MongoClient('localhost', 27017)
         db = client['weibo']
-        collection = eval('db.'+self.nickname+'_weibos')
-        collection.insert_many(self.df.to_dict('records'))
+        records = json.loads(self.df.T.to_json()).values()
+        eval('db.' + self.nickname + '_weibos.insert(records')
