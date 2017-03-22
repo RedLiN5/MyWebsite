@@ -6,6 +6,7 @@ import re
 import os
 import glob
 import pandas as pd
+import json
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from pymongo import MongoClient
@@ -184,8 +185,8 @@ class CollectLikes(object):
     def _to_mongodb(self):
         client = MongoClient('localhost', 27017)
         db = client['weibo']
-        collection = eval('db.'+self.nickname+'_likes')
-        collection.insert_many(self.df.to_dict('records'))
+        records = json.loads(self.df.T.to_json()).values()
+        eval('db.' + self.nickname + '_likes.insert(records)')
 
     def _quit(self):
         try:
