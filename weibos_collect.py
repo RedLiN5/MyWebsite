@@ -97,4 +97,4 @@ class CollectWeibo(object):
         client = MongoClient('localhost', 27017)
         db = client['weibo']
         records = json.loads(self.df.T.to_json()).values()
-        eval('db.' + self.nickname + '_weibos.insert(records)')
+        eval('db.' + self.nickname + '_weibos.insert_many(records)')

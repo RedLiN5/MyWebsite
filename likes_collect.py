@@ -191,7 +191,7 @@ class CollectLikes(object):
         client = MongoClient('localhost', 27017)
         db = client['weibo']
         records = json.loads(self.df.T.to_json()).values()
-        eval('db.' + self.nickname + '_likes.insert(records)')
+        eval('db.' + self.nickname + '_likes.insert_many(records)')
 
     def _quit(self):
         try:
