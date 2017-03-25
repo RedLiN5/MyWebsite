@@ -10,6 +10,8 @@ import json
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from pymongo import MongoClient
+import requests
+from lxml import etree
 
 class CollectLikes(object):
 
@@ -51,8 +53,11 @@ class CollectLikes(object):
             print('Error:', e)
 
     def collect_weibo_likes(self):
-        pass
-        # TODO Realize it with requests @.com
+        cookie = self.mycookie
+        r = requests.post('http://wikipedia.org', cookies=cookie)
+        url = 'http://weibo.com'
+        html = requests.get(url, cookies=self.mycookie).content
+        results = etree.HTML(html)
 
     def get_likes(self):
         if not self.bloger:
