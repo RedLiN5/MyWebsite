@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import glob
 import os
+from pymongo import MongoClient
 
 
 class LikesPlot(object):
@@ -15,6 +16,13 @@ class LikesPlot(object):
         self.nickname = nickname
 
     def _read_data(self):
+        client = MongoClient('localhost', 27017)
+        db = client['weibo']
+        try:
+            exec('cursor = db.' + self.nickname + '_likes.find()')
+            df = pd.DataFrame(list(cursor))
+        except Exception as e:
+            print(e)
         df = pd.read_table('data/{0}_likes.csv'.format(self.nickname),
                            sep=',', header=0, index_col=0)
         return df
