@@ -7,6 +7,7 @@ from datetime import datetime
 import seaborn as sns
 import glob
 import os
+from pymongo import MongoClient
 
 
 class WeiboPlot(object):
@@ -15,7 +16,13 @@ class WeiboPlot(object):
         self.nickname = nickname
 
     def _read_data(self):
-        df = pd.read_table('data/{0}_weibos.csv'.format(self.nickname),
+        client = MongoClient('localhost', 27017)
+        db = client['weibo']
+        try:
+            eval('cursor = db.' + self.nickname + '_weibos.find()')
+            df = pd.DataFrame(list(cursor))
+        except:
+            df = pd.read_table('data/{0}_weibos.csv'.format(self.nickname),
                            sep=',', header=0, index_col=0)
         return df
 
