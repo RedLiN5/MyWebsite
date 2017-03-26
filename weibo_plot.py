@@ -18,11 +18,14 @@ class WeiboPlot(object):
     def _read_data(self):
         client = MongoClient('localhost', 27017)
         db = client['weibo']
-        try:
-            exec('cursor = db.' + self.nickname + '_weibos.find()')
-            df = pd.DataFrame(list(cursor))
-        except Exception as e:
-            print(e)
+        collection_names = db.collection_names()
+        if 'data/{0}_weibos'.format(self.nickname) in collection_names:
+            try:
+                exec('cursor = db.' + self.nickname + '_likes.find()')
+                df = pd.DataFrame(list(cursor))
+            except Exception as e:
+                print(e)
+        else:
             df = pd.read_table('data/{0}_weibos.csv'.format(self.nickname),
                            sep=',', header=0, index_col=0)
         return df
