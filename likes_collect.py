@@ -11,7 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from pymongo import MongoClient
 import requests
-from lxml import etree
+import bs4
 
 class CollectLikes(object):
 
@@ -52,12 +52,17 @@ class CollectLikes(object):
         except Exception as e:
             print('Error:', e)
 
+# ---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---
     def collect_weibo_likes(self):
         cookie = self.mycookie
-        r = requests.post('http://wikipedia.org', cookies=cookie)
         url = 'http://weibo.com'
-        html = requests.get(url, cookies=self.mycookie).content
-        results = etree.HTML(html)
+        headers = {'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) " +
+                                 "Gecko/20100101 Firefox/51.0"}
+        html = requests.get(url, cookies=cookie,
+                            headers=headers)
+        soup = bs4.BeautifulSoup(html.content, 'html5lib')
+
+
 
     def get_likes(self):
         if not self.bloger:
