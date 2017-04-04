@@ -5,7 +5,7 @@ from flask import url_for
 from flask import redirect
 from flask import flash
 import sys
-sys.path.append('/Users/Leslie/GitHub/WeiboFans')
+sys.path.append('/Users/Leslie/GitHub/MyWebsite/Weibo')
 from sinaweibo import SinaWeibo
 
 app = Flask(__name__)
