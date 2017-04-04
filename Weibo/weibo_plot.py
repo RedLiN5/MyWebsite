@@ -39,10 +39,10 @@ class WeiboPlot(object):
                                              df_count.index)))
 
         file_name = 'weibo_trend_{0}.png'.format(self.nickname)
-        exist_files_dir = glob.glob('interface/app/static/plots/*.png')
+        exist_files_dir = glob.glob('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/*.png')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
-            os.remove('interface/app/static/plots/' + file_name)
+            os.remove('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/' + file_name)
 
         mpl.rcParams['font.sans-serif'] = ['SimHei']
         mpl.rcParams['font.serif'] = ['SimHei']
@@ -56,16 +56,16 @@ class WeiboPlot(object):
                 'c-',
                 linewidth=2.5)
         ax.title.set_text('Weibo Trend of {0}'.format(self.nickname))
-        fig.savefig('interface/app/static/plots/' + file_name,
+        fig.savefig('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
 
     def weibo_records_plot(self):
         df = self._read_data()
         file_name = 'weibo_records_{0}.png'.format(self.nickname)
-        exist_files_dir = glob.glob('interface/app/static/plots/*.png')
+        exist_files_dir = glob.glob('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/*.png')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
-            os.remove('interface/app/static/plots/' + file_name)
+            os.remove('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/' + file_name)
 
         mpl.rcParams['font.sans-serif'] = ['SimHei']
         mpl.rcParams['font.serif'] = ['SimHei']
@@ -93,7 +93,7 @@ class WeiboPlot(object):
                           rotation=30)
         sns.despine()
         ax.title.set_text('Weibo Records of {0}'.format(self.nickname))
-        fig.savefig('interface/app/static/plots/' + file_name,
+        fig.savefig('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
 
     def start_weibo_plot(self):

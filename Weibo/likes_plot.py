@@ -50,10 +50,10 @@ class LikesPlot(object):
     def start_likes_plot(self):
         df_plot = self._sort()
         file_name = 'weibo_likes_{0}.png'.format(self.nickname)
-        exist_files_dir = glob.glob('interface/app/static/plots/*.png')
+        exist_files_dir = glob.glob('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/*.png')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
-            os.remove('interface/app/static/plots/' + file_name)
+            os.remove('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/' + file_name)
 
         upper = max(df_plot.num)
         mpl.rcParams['font.sans-serif'] = ['SimHei']
@@ -71,5 +71,5 @@ class LikesPlot(object):
         sns.despine(top=True, right=True, left=True)
         ax.set(xlim=(0, upper+2), ylabel="",
                xlabel="点赞总数")
-        f.savefig('interface/app/static/plots/' + file_name,
+        f.savefig('/Users/Leslie/GitHub/MyWebsite/interface/app/static/plots/' + file_name,
                   bbox_inches='tight')
