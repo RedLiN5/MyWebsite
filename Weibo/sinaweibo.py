@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from .likes_collect import CollectLikes
-from .weibos_collect import CollectWeibo
-from .likes_plot import LikesPlot
-from .weibo_plot import WeiboPlot
+from likes_collect import CollectLikes
+from weibos_collect import CollectWeibo
+from likes_plot import LikesPlot
+from weibo_plot import WeiboPlot
 
 class SinaWeibo(object):
 

@@ -10,7 +10,6 @@ import glob
 import os
 import sys
 import json
-from .likes_collect import CollectLikes
 from pymongo import MongoClient
 
 class CollectWeibo(object):
