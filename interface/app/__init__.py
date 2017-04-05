@@ -2,7 +2,6 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import url_for
-from flask import redirect
 from flask import flash
 import sys
 sys.path.append('/Users/Leslie/GitHub/MyWebsite/Weibo')
@@ -24,7 +23,7 @@ def projects_demo():
     return render_template('projects_demo.html')
     # TODO (Leslie) Build projects_demo.html
 
-@app.route('/search', methods=['POST', 'GET'])
+@app.route('/weibo/search', methods=['POST', 'GET'])
 def search():
     error = ''
     try:
