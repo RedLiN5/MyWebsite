@@ -7,11 +7,8 @@ from weibo_plot import WeiboPlot
 
 class SinaWeibo(object):
 
-    def __init__(self, username=None, password=None,
-                 bloger=None, max_page=None):
-        self.LikesCol = CollectLikes(username=username,
-                                     password=password,
-                                     bloger=bloger)
+    def __init__(self, bloger=None, max_page=None):
+        self.LikesCol = CollectLikes(bloger=bloger)
         self.WeiboCol = CollectWeibo(bloger=bloger,
                                      max_page=max_page)
 
