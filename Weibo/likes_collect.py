@@ -15,14 +15,14 @@ import bs4
 
 class CollectLikes(object):
 
-    def __init__(self, username=None, password=None, bloger=None):
+    def __init__(self, bloger=None):
         chrome_options = webdriver.ChromeOptions()
         prefs = {"profile.default_content_setting_values.notifications": 2}
         chrome_options.add_experimental_option("prefs", prefs)
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
         self.df = pd.DataFrame(columns=['Bloger', 'PostTime', 'URL'])
-        self.username = username
-        self.password = password
+        self.username = '13652063773'
+        self.password = '4372125'
         self.bloger = bloger
 
     def login(self):
@@ -191,6 +191,7 @@ class CollectLikes(object):
             os.remove('data/'+file_name)
         self.df.to_csv('data/'+file_name, sep=',',
                        encoding='utf-8')
+        self._to_mongodb()
 
     def _to_mongodb(self):
         client = MongoClient('localhost', 27017)
