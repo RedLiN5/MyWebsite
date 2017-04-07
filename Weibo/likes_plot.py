@@ -8,6 +8,7 @@ import matplotlib as mpl
 import glob
 import os
 from pymongo import MongoClient
+import json
 
 
 class LikesPlot(object):
@@ -28,6 +29,10 @@ class LikesPlot(object):
         else:
             df = pd.read_table('data/{0}_likes.csv'.format(self.nickname),
                                sep=',', header=0, index_col=0)
+            client = MongoClient('localhost', 27017)
+            db = client['weibo']
+            records = json.loads(self.df.T.to_json()).values()
+            eval('db.' + self.nickname + '_likes.insert_many(records)')
         return df
 
     def _elim_own(self):
