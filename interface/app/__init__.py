@@ -30,6 +30,9 @@ def weibo_search():
         if request.method == 'POST':
             username = request.form['username']
             if username != '':
+                weibo = SinaWeibo(bloger=username,
+                                      max_page=20)
+                weibo.start()
                 likes_dir = 'plots/weibo_likes_{0}.png'.format(username)
                 trend_dir = 'plots/weibo_trend_{0}.png'.format(username)
                 record_dir = 'plots/weibo_records_{0}.png'.format(username)
