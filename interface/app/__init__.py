@@ -4,6 +4,7 @@ from flask import request
 from flask import url_for
 from flask import flash
 import sys
+import glob
 sys.path.append('/Users/Leslie/GitHub/MyWebsite/Weibo')
 from sinaweibo import SinaWeibo
 
@@ -30,16 +31,20 @@ def weibo_search():
         if request.method == 'POST':
             username = request.form['username']
             if username != '':
-                weibo = SinaWeibo(bloger=username,
+                filenames = glob.glob('static/plots/*.png')
+                if any(username in f for f in filenames):
+                    pass
+                else:
+                    weibo = SinaWeibo(bloger=username,
                                       max_page=20)
-                weibo.start()
+                    weibo.start()
                 likes_dir = 'plots/weibo_likes_{0}.png'.format(username)
                 trend_dir = 'plots/weibo_trend_{0}.png'.format(username)
                 record_dir = 'plots/weibo_records_{0}.png'.format(username)
                 return render_template('weibo/search_result.html',
-                                       likes_dir = likes_dir,
-                                       trend_dir= trend_dir,
-                                       record_dir = record_dir)
+                                       likes_dir=likes_dir,
+                                       trend_dir=trend_dir,
+                                       record_dir=record_dir)
             else:
                 flash('\"Username\" cannot be empty!',
                       category='warning')
