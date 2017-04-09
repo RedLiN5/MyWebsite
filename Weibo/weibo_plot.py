@@ -55,7 +55,8 @@ class WeiboPlot(object):
                 df_count.Count,
                 'c-',
                 linewidth=2.5)
-        ax.title.set_text('Weibo Trend of {0}'.format(self.nickname))
+        ax.set_title('Weibo Trend of {0}'.format(self.nickname),
+                     fontsize=30)
         fig.savefig('../interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
 
@@ -92,7 +93,8 @@ class WeiboPlot(object):
         g.set_xticklabels(labels=xlabel_date,
                           rotation=30)
         sns.despine()
-        ax.title.set_text('Weibo Records of {0}'.format(self.nickname))
+        ax.set_title('Weibo Records of {0}'.format(self.nickname),
+                     fontsize=30)
         fig.savefig('../interface/app/static/plots/' + file_name,
                     bbox_inches='tight')
 
