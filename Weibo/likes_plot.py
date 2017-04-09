@@ -64,7 +64,7 @@ class LikesPlot(object):
         mpl.rcParams['font.sans-serif'] = ['SimHei']
         mpl.rcParams['font.serif'] = ['SimHei']
         sns.set_style("white", {"font.sans-serif": ['simhei', 'Arial']})
-        f, ax = plt.subplots(figsize=(3, 7), dpi=100)
+        f, ax = plt.subplots(figsize=(20, 9), dpi=100)
         frame = plt.gca()
         frame.get_yaxis().set_visible(False)
         frame.get_xaxis().set_visible(False)
