@@ -106,31 +106,14 @@ class CollectLikes(object):
     def _sort_by_likes(self):
         print("Move to bloger's likes")
         self.bloger_page = self.driver.current_url
-        elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
-        elem_likes.find_element_by_class_name('more_txt').click()
-        time.sleep(2)
-        more_likes = self.driver.find_element_by_xpath("//ul[@class='lev_list']")
-        more_likes.find_element_by_xpath('li[3]/a/span').click()
-
-        for _ in range(3):
-            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        try:
+            elem_likes = self.driver.find_element_by_class_name('PCD_pictext_f')
+            elem_likes.find_element_by_class_name('more_txt').click()
             time.sleep(2)
+            more_likes = self.driver.find_element_by_xpath("//ul[@class='lev_list']")
+            more_likes.find_element_by_xpath('li[3]/a/span').click()
 
-        elem_likeswb = self.driver.find_element_by_class_name('WB_frame_c')
-        elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
-        all_likes_wb = elem_all_likes_wb.find_elements_by_xpath('div')
-
-        deletes = 0
-        blogers = []
-        homepages = []
-        visittime = []
-
-        page_str = all_likes_wb[-1].text
-        current_page = 1
-
-        while '下一页' in page_str:
-            # Scroll down to bottom of a page
-            for _ in range(4):
+            for _ in range(3):
                 self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 time.sleep(2)
 
@@ -138,60 +121,81 @@ class CollectLikes(object):
             elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
             all_likes_wb = elem_all_likes_wb.find_elements_by_xpath('div')
 
-            print('Collecting data')
-            for element in all_likes_wb[:-1]:
-                class_name = element.find_element_by_xpath('div[1]').get_attribute('class')
-                if class_name == 'WB_empty':
-                    deletes += 1
-                else:
-                    wb_info = element.find_element_by_class_name('WB_info')
-                    info = wb_info.find_element_by_xpath('a')
-                    bloger = info.get_attribute('nick-name')
-                    page = info.get_attribute('href')
-                    blogers.append(bloger)
-                    homepages.append(page)
-                    pub_time = element.find_element_by_class_name('WB_from').text
-                    if re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time):
-                        m = re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time)
-                        visittime.append(m.group(0))
-                    elif '今天' in pub_time:
-                        date = datetime.datetime.now().strftime("%Y-%m-%d")
-                        visittime.append(date)
-                    elif re.search('([0-9]{1,2})月([0-9]{1,2})日', pub_time):
-                        month, day = re.search('([0-9]{1,2})月([0-9]{1,2})日',
-                                               pub_time).group(1,2)
-                        year = datetime.datetime.now().strftime("%Y")
-                        date = '{0}-{1}-{2}'.format(year, month, day)
-                        visittime.append(date)
+            deletes = 0
+            blogers = []
+            homepages = []
+            visittime = []
 
             page_str = all_likes_wb[-1].text
-            print("Finished crawling page %d" % (current_page))
+            current_page = 1
 
-            if '下一页' in page_str:
-                if current_page == 1:
-                    all_likes_wb[-1].find_element_by_xpath('div/a').click()
-                elif current_page >10:
-                    break
-                else:
-                    all_likes_wb[-1].find_element_by_xpath('div/a[2]').click()
+            while '下一页' in page_str:
+                # Scroll down to bottom of a page
+                for _ in range(4):
+                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    time.sleep(2)
 
-            current_page += 1
+                elem_likeswb = self.driver.find_element_by_class_name('WB_frame_c')
+                elem_all_likes_wb = elem_likeswb.find_element_by_class_name('WB_feed')
+                all_likes_wb = elem_all_likes_wb.find_elements_by_xpath('div')
 
-        if len(blogers) == len(homepages) == len(visittime):
-            self.df['Bloger'] = blogers
-            self.df['PostTime'] = visittime
-            self.df['URL'] = homepages
-        else:
-            raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
+                print('Collecting data')
+                for element in all_likes_wb[:-1]:
+                    class_name = element.find_element_by_xpath('div[1]').get_attribute('class')
+                    if class_name == 'WB_empty':
+                        deletes += 1
+                    else:
+                        wb_info = element.find_element_by_class_name('WB_info')
+                        info = wb_info.find_element_by_xpath('a')
+                        bloger = info.get_attribute('nick-name')
+                        page = info.get_attribute('href')
+                        blogers.append(bloger)
+                        homepages.append(page)
+                        pub_time = element.find_element_by_class_name('WB_from').text
+                        if re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time):
+                            m = re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', pub_time)
+                            visittime.append(m.group(0))
+                        elif '今天' in pub_time:
+                            date = datetime.datetime.now().strftime("%Y-%m-%d")
+                            visittime.append(date)
+                        elif re.search('([0-9]{1,2})月([0-9]{1,2})日', pub_time):
+                            month, day = re.search('([0-9]{1,2})月([0-9]{1,2})日',
+                                                   pub_time).group(1,2)
+                            year = datetime.datetime.now().strftime("%Y")
+                            date = '{0}-{1}-{2}'.format(year, month, day)
+                            visittime.append(date)
 
-        self._quit()
-        file_name = '{0}_likes.csv'.format(self.nickname)
-        exist_files = glob.glob('data/*.csv')
-        if file_name in exist_files:
-            os.remove('data/'+file_name)
-        self.df.to_csv('data/'+file_name, sep=',',
-                       encoding='utf-8')
-        self._to_mongodb()
+                page_str = all_likes_wb[-1].text
+                print("Finished crawling page %d" % (current_page))
+
+                if '下一页' in page_str:
+                    if current_page == 1:
+                        all_likes_wb[-1].find_element_by_xpath('div/a').click()
+                    elif current_page >10:
+                        break
+                    else:
+                        all_likes_wb[-1].find_element_by_xpath('div/a[2]').click()
+
+                current_page += 1
+
+            if len(blogers) == len(homepages) == len(visittime):
+                self.df['Bloger'] = blogers
+                self.df['PostTime'] = visittime
+                self.df['URL'] = homepages
+            else:
+                raise Exception('Lengths of "blogers", "homepages" and "time" are not same.')
+
+            self._quit()
+            file_name = '{0}_likes.csv'.format(self.nickname)
+            exist_files = glob.glob('data/*.csv')
+            if file_name in exist_files:
+                os.remove('data/'+file_name)
+            self.df.to_csv('data/'+file_name, sep=',',
+                           encoding='utf-8')
+            self._to_mongodb()
+        except:
+            print('This bloger has no thumbs up.')
+            self.driver.quit()
 
     def _to_mongodb(self):
         client = MongoClient('localhost', 27017)
