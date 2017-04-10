@@ -19,7 +19,7 @@ class WeiboPlot(object):
         client = MongoClient('localhost', 27017)
         db = client['weibo']
         collection_names = db.collection_names()
-        if 'data/{0}_weibos'.format(self.nickname) in collection_names:
+        if '{0}_weibos'.format(self.nickname) in collection_names:
             try:
                 exec('cursor = db.' + self.nickname + '_likes.find()')
                 df = pd.DataFrame(list(cursor))
