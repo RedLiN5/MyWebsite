@@ -20,20 +20,27 @@ class LikesPlot(object):
         client = MongoClient('localhost', 27017)
         db = client['weibo']
         collection_names = db.collection_names()
-        if 'data/{0}_likes'.format(self.nickname) in collection_names:
+        dataset_names = glob.glob('static/data/*.csv')
+        if '{0}_likes'.format(self.nickname) in collection_names:
             try:
                 exec('cursor = db.' + self.nickname + '_likes.find()')
                 df = pd.DataFrame(list(cursor))
+                return df
             except Exception as e:
                 print(e)
-        else:
-            df = pd.read_table('data/{0}_likes.csv'.format(self.nickname),
+        elif any('{0}_likes'.format(self.nickname) in name for name in dataset_names):
+            df = pd.read_table('static/data/{0}_likes.csv'.format(self.nickname),
                                sep=',', header=0, index_col=0)
             client = MongoClient('localhost', 27017)
             db = client['weibo']
             records = json.loads(self.df.T.to_json()).values()
             eval('db.' + self.nickname + '_likes.insert_many(records)')
-        return df
+            return df
+        else:
+            file_name = 'weibo_likes_{0}.png'.format(self.nickname)
+            plt.figure()
+            plt.savefig('static/plots/' + file_name,
+                        bbox_inches='tight')
 
     def _elim_own(self):
         df = self._read_data()
@@ -55,10 +62,12 @@ class LikesPlot(object):
     def start_likes_plot(self):
         df_plot = self._sort()
         file_name = 'weibo_likes_{0}.png'.format(self.nickname)
-        exist_files_dir = glob.glob('../interface/app/static/plots/*.png')
+        exist_files_dir = glob.glob('static/plots/*.png')
+        print('loc1')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
-            os.remove('../interface/app/static/plots/' + file_name)
+            print('loc2')
+            os.remove('static/plots/' + file_name)
 
         upper = max(df_plot.num)
         mpl.rcParams['font.sans-serif'] = ['SimHei']
@@ -76,5 +85,7 @@ class LikesPlot(object):
         sns.despine(top=True, right=True, left=True)
         ax.set(xlim=(0, upper+2), ylabel="",
                xlabel="点赞总数")
-        f.savefig('../interface/app/static/plots/' + file_name,
+        print('loc3')
+        f.savefig('static/plots/' + file_name,
                   bbox_inches='tight')
+        print('loc4')
