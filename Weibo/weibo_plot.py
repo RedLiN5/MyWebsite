@@ -26,7 +26,7 @@ class WeiboPlot(object):
             except Exception as e:
                 print(e)
         else:
-            df = pd.read_table('data/{0}_weibos.csv'.format(self.nickname),
+            df = pd.read_table('static/data/{0}_weibos.csv'.format(self.nickname),
                            sep=',', header=0, index_col=0)
         return df
 
@@ -39,10 +39,10 @@ class WeiboPlot(object):
                                              df_count.index)))
 
         file_name = 'weibo_trend_{0}.png'.format(self.nickname)
-        exist_files_dir = glob.glob('../interface/app/static/plots/*.png')
+        exist_files_dir = glob.glob('static/plots/*.png')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
-            os.remove('../interface/app/static/plots/' + file_name)
+            os.remove('static/plots/' + file_name)
 
         mpl.rcParams['font.sans-serif'] = ['SimHei']
         mpl.rcParams['font.serif'] = ['SimHei']
@@ -57,7 +57,7 @@ class WeiboPlot(object):
                 linewidth=2.5)
         ax.set_title('Weibo Trend of {0}'.format(self.nickname),
                      fontsize=30)
-        fig.savefig('../interface/app/static/plots/' + file_name,
+        fig.savefig('static/plots/' + file_name,
                     bbox_inches='tight')
 
     def weibo_records_plot(self):
@@ -66,7 +66,7 @@ class WeiboPlot(object):
         exist_files_dir = glob.glob('../interface/app/static/plots/*.png')
         exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
         if file_name in exist_files:
-            os.remove('../interface/app/static/plots/' + file_name)
+            os.remove('static/plots/' + file_name)
 
         mpl.rcParams['font.sans-serif'] = ['SimHei']
         mpl.rcParams['font.serif'] = ['SimHei']
@@ -86,8 +86,7 @@ class WeiboPlot(object):
                        value='Num',
                        condition='Subject',
                        unit='Unit',
-                       color=sns.color_palette("Set2", 3)
-                       )
+                       color=sns.color_palette("Set2", 3))
         xlabel_date = list(map(lambda x: x.strftime("%Y-%m-%d"),
                                table["Date"].value_counts().index.tolist()))
         g.set_xticklabels(labels=xlabel_date,
@@ -95,7 +94,7 @@ class WeiboPlot(object):
         sns.despine()
         ax.set_title('Weibo Records of {0}'.format(self.nickname),
                      fontsize=30)
-        fig.savefig('../interface/app/static/plots/' + file_name,
+        fig.savefig('static/plots/' + file_name,
                     bbox_inches='tight')
 
     def start_weibo_plot(self):
