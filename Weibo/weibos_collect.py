@@ -81,15 +81,14 @@ class CollectWeibo(object):
 
             page_num += 1
 
-        print(np.array([pub_dates, likes, reposts, comments]).shape)
         self.df = pd.DataFrame(data = np.array([pub_dates, likes, reposts, comments]).T,
                                columns = columns)
         self.nickname = nickname
         file_name = '{0}_weibos.csv'.format(nickname)
-        exist_files = glob.glob('data/*.csv')
-        if file_name in exist_files:
-            os.remove('data/'+file_name)
-        self.df.to_csv('data/'+file_name, sep=',',
+        exist_files = glob.glob('static/data/*.csv')
+        if any(file_name in file for file in exist_files):
+            os.remove('static/data/'+file_name)
+        self.df.to_csv('static/data/'+file_name, sep=',',
                   encoding='utf-8')
 
     def _to_mongodb(self):
