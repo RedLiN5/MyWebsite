@@ -32,7 +32,7 @@ def weibo_search():
             username = request.form['username']
             if username != '':
                 filenames = glob.glob('static/plots/*.png')
-                if any(username in f for f in filenames):
+                if sum(username in f for f in filenames)==3:
                     pass
                 else:
                     weibo = SinaWeibo(bloger=username,
