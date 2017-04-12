@@ -88,7 +88,8 @@ class CollectLikes(object):
         try:
             elem_user_list = self.driver.find_element_by_class_name('pl_personlist')
             most_possible = elem_user_list.find_element_by_xpath('div[1]/div[3]/p/a')
-            self.nickname = most_possible.get_attribute('title')
+            fullname = most_possible.get_attribute('title')
+            self.nickname = re.sub(r'[^\w]', '', fullname)
             to_click = most_possible.find_element_by_xpath('em')
             to_click.click()
         except:
