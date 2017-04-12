@@ -187,14 +187,14 @@ class CollectLikes(object):
 
             self._quit()
             file_name = '{0}_likes.csv'.format(self.nickname)
-            exist_files = glob.glob('data/*.csv')
+            exist_files = glob.glob('static/data/*.csv')
             if file_name in exist_files:
-                os.remove('data/'+file_name)
-            self.df.to_csv('data/'+file_name, sep=',',
+                os.remove('static/data/'+file_name)
+            self.df.to_csv('static/data/'+file_name, sep=',',
                            encoding='utf-8')
             self._to_mongodb()
-        except:
-            print('This bloger has no thumbs up.')
+        except Exception as e:
+            print('This bloger has no thumbs up. Or process encounters following errors:', e)
             self.driver.quit()
 
     def _to_mongodb(self):
