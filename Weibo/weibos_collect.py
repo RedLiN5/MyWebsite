@@ -92,7 +92,10 @@ class CollectWeibo(object):
                   encoding='utf-8')
 
     def _to_mongodb(self):
-        client = MongoClient('localhost', 27017)
-        db = client['weibo']
-        records = json.loads(self.df.T.to_json()).values()
-        eval('db.' + self.nickname + '_weibos.insert_many(records)')
+        try:
+            client = MongoClient('localhost', 27017)
+            db = client['weibo']
+            records = json.loads(self.df.T.to_json()).values()
+            eval('db.' + self.nickname + '_weibos.insert_many(records)')
+        except Exception as e:
+            print('Weibo data cannot save to Mongodb for the following reason:', e)
