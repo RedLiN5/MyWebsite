@@ -23,11 +23,11 @@ class LikesPlot(object):
         dataset_names = glob.glob('static/data/*.csv')
         if '{0}_likes'.format(self.nickname) in collection_names:
             try:
-                exec('cursor = db.' + self.nickname + '_likes.find()')
+                cursor = eval('db.' + self.nickname + '_likes.find()')
                 df = pd.DataFrame(list(cursor))
                 return df
             except Exception as e:
-                print(e)
+                print('Thumbs up data cannot be retrieved for the following reason:', e)
         elif any('{0}_likes'.format(self.nickname) in name for name in dataset_names):
             df = pd.read_table('static/data/{0}_likes.csv'.format(self.nickname),
                                sep=',', header=0, index_col=0)
@@ -66,17 +66,15 @@ class LikesPlot(object):
         if isinstance(df_plot, pd.DataFrame):
             file_name = 'weibo_likes_{0}.png'.format(self.nickname)
             exist_files_dir = glob.glob('static/plots/*.png')
-            print('loc1')
             exist_files = list(map(lambda x: x.split('/')[-1], exist_files_dir))
             if file_name in exist_files:
-                print('loc2')
                 os.remove('static/plots/' + file_name)
 
             upper = max(df_plot.num)
             mpl.rcParams['font.sans-serif'] = ['SimHei']
             mpl.rcParams['font.serif'] = ['SimHei']
             sns.set_style("white", {"font.sans-serif": ['simhei', 'Arial']})
-            f, ax = plt.subplots(figsize=(20, 9), dpi=100)
+            f, ax = plt.subplots(figsize=(6, 9), dpi=100)
             frame = plt.gca()
             frame.get_yaxis().set_visible(False)
             frame.get_xaxis().set_visible(False)
@@ -88,7 +86,6 @@ class LikesPlot(object):
             sns.despine(top=True, right=True, left=True)
             ax.set(xlim=(0, upper+2), ylabel="",
                    xlabel="点赞总数")
-            print('loc3')
             f.savefig('static/plots/' + file_name,
                       bbox_inches='tight')
             print('loc4')
