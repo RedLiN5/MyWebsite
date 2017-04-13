@@ -9,14 +9,45 @@ import numpy as np
 import glob
 import os
 import sys
+import time
 import json
 from pymongo import MongoClient
+from time import localtime, strftime
+from selenium import webdriver
+
 
 class CollectWeibo(object):
 
     def __init__(self, max_page=50, bloger=None):
         self.max_page = max_page
         self.bloger = bloger
+        self._get_captcha()
+
+    def _get_captcha(self):
+        self.driver = webdriver.Chrome()
+        self.driver.get('https://weibo.cn/login/')
+        item = self.driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
+        url_captcha = item.get_attribute('src')
+        image_captcha = requests.get(url_captcha)
+        current_time = strftime("%Y-%m-%d_%H:%M:%S", localtime())
+        self.captcha_name = 'captcha_{0}.jpg'.format(current_time)
+        open('static/login_captcha/'+self.captcha_name, 'wb').write(image_captcha.content)
+
+    def get_cookie(self, captcha=None):
+        elem_user = self.driver.find_element_by_name('mobile')
+        elem_user.clear()
+        elem_user.send_keys('13652063773')
+        elem_password = self.driver.find_element_by_name('password_2791')
+        elem_password.send_keys('4372125')
+        elem_captcha = self.driver.find_element_by_name('code')
+        elem_captcha.send_keys(captcha)
+        elem_remem = self.driver.find_element_by_name('remember')
+        elem_remem.click()
+        time.sleep(1)
+        cookie = [item["name"] + "=" + item["value"] for item in self.driver.get_cookies()]
+        mycookie = {'Cookie': '; '.join(cookie)}
+        self.driver.quit()
+        return mycookie
 
     def get_weibo(self, cookie=None, bloger_page=None, nickname=None):
         if len(cookie['Cookie'])>1:
