@@ -88,7 +88,6 @@ class LikesPlot(object):
                    xlabel="点赞总数")
             f.savefig('static/plots/' + file_name,
                       bbox_inches='tight')
-            print('loc4')
         else:
             file_name = 'weibo_likes_{0}.png'.format(self.nickname)
             plt.figure()
