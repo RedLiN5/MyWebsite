@@ -22,7 +22,7 @@ class CollectWeibo(object):
         if len(cookie['Cookie'])>1:
             self.mycookie = cookie
         else:
-            raise ValueError('"cookie" cannot be empty')
+            raise ValueError('"Cookie" cannot be empty')
         m = re.search("/([a-z0-9]+)\?", bloger_page)
         user_id = m.group(1)
         url_front = 'http://weibo.cn/%s?page=' % (user_id)
@@ -33,11 +33,16 @@ class CollectWeibo(object):
         likes = []
         reposts = []
         comments = []
+        print('start weibo collecting')
 
         while page_num <= self.max_page:
             url = url_front + str(page_num)
-            html = requests.get(url, cookies=self.mycookie).content
-            selector = etree.HTML(html)
+            headers = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) " +
+                                     "Gecko/20100101 Firefox/51.0"}
+            html = requests.get(url,
+                                cookies=self.mycookie,
+                                headers=headers)
+            selector = etree.HTML(html.content)
             items = selector.xpath("//div[@class='c' and @id]")
             num_item = len(items)
             if num_item > 1:
@@ -72,7 +77,7 @@ class CollectWeibo(object):
                             year = datetime.datetime.now().strftime("%Y")
                             date = '{0}-{1}-{2}'.format(year, month, day)
                             pub_dates.append(date)
-
+                        print('Finish crawling page {0}'.format(page_num))
                     except Exception as e:
                         print(e)
                         exc_type, exc_obj, exc_tb = sys.exc_info()
