@@ -12,6 +12,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from pymongo import MongoClient
 import requests
 import bs4
+from time import localtime, strftime
+
 
 class CollectLikes(object):
 
@@ -212,9 +214,19 @@ class CollectLikes(object):
             actions.move_to_element(setting)
             actions.click(click_quit)
             actions.perform()
+            self._get_captcha()
         except Exception as e:
             print('Error:', 'Quit button cannot be found.', '\n', e)
         self.driver.quit()
+
+    def _get_captcha(self):
+        self.driver.get('https://weibo.cn/login/')
+        item = self.driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
+        url_captcha = item.get_attribute('src')
+        image_captcha = requests.get(url_captcha)
+        current_time = strftime("%Y-%m-%d_%H:%M:%S", localtime())
+        self.captcha_name = 'captcha_{0}.jpg'.format(current_time)
+        open('static/login_captcha/'+self.captcha_name, 'wb').write(image_captcha.content)
 
     def get_homepage(self):
         return self.bloger_page
