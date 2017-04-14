@@ -37,6 +37,7 @@
   <div class="card"></div>
   <div class="card">
     <h1 class="title">Search User</h1>
+    <img class="img-responsive" src="{{ url_for('static', filename=captcha_dir)}}" alt="Captcha Code"  >
     <form method="POST">
       <div class="input-container">
         <input type="text" name="captcha" required="required"
