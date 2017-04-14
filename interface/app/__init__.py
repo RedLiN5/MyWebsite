@@ -8,6 +8,8 @@ import glob
 sys.path.append('/Users/Leslie/GitHub/MyWebsite/Weibo')
 from sinaweibo import SinaWeibo
 
+weibo = SinaWeibo()
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -35,9 +37,13 @@ def weibo_search():
                 if sum(username in f for f in filenames)==3:
                     pass
                 else:
-                    weibo = SinaWeibo(bloger=username,
-                                      max_page=20)
-                    weibo.start()
+                    weibo.initial(bloger=username,
+                                  max_page=20)
+                    captcha_name = weibo.captcha_name
+                    captcha_dir = 'login_captcha/{0}.png'.format(captcha_name)
+                    weibo.first_part()
+                    return render_template('weibo/captcha_input.html',
+                                           captcha_name = captcha_dir)
                 likes_dir = 'plots/weibo_likes_{0}.png'.format(username)
                 trend_dir = 'plots/weibo_trend_{0}.png'.format(username)
                 record_dir = 'plots/weibo_records_{0}.png'.format(username)
@@ -53,6 +59,26 @@ def weibo_search():
     except Exception as e:
         flash(e)
         return render_template('weibo/search.html', error=error)
+
+@app.route('/weibo/captcha', methods=['post', 'Get'])
+def captcha_input():
+    error = ''
+    try:
+        if request.method == 'POST':
+            captcha = request.form['captcha']
+            weibo.second_part(captcha=captcha)
+            username = weibo.nickname
+            likes_dir = 'plots/weibo_likes_{0}.png'.format(username)
+            trend_dir = 'plots/weibo_trend_{0}.png'.format(username)
+            record_dir = 'plots/weibo_records_{0}.png'.format(username)
+            return render_template('weibo/search_result.html',
+                                   likes_dir=likes_dir,
+                                   trend_dir=trend_dir,
+                                   record_dir=record_dir)
+    except Exception as e:
+        flash(e)
+        return render_template('weibo/captcha.html', error=error)
+
 
 @app.route('/douban/search', methods=['POST', 'GET'])
 def douban_search():
