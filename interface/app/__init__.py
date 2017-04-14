@@ -40,9 +40,10 @@ def weibo_search():
                     weibo.initial(bloger=username,
                                   max_page=20)
                     captcha_name = weibo.captcha_name
-                    captcha_dir = 'login_captcha/{0}.png'.format(captcha_name)
+                    captcha_dir = 'login_captcha/{0}'.format(captcha_name)
+                    print(captcha_dir)
                     weibo.first_part()
-                    return render_template('weibo/captcha_input.html',
+                    return render_template('weibo/captcha.html',
                                            captcha_name = captcha_dir)
                 likes_dir = 'plots/weibo_likes_{0}.png'.format(username)
                 trend_dir = 'plots/weibo_trend_{0}.png'.format(username)
@@ -60,7 +61,7 @@ def weibo_search():
         flash(e)
         return render_template('weibo/search.html', error=error)
 
-@app.route('/weibo/captcha', methods=['post', 'Get'])
+@app.route('/weibo/captcha', methods=['POST', 'GET'])
 def captcha_input():
     error = ''
     try:
@@ -77,7 +78,9 @@ def captcha_input():
                                    record_dir=record_dir)
     except Exception as e:
         flash(e)
-        return render_template('weibo/captcha.html', error=error)
+        return render_template('weibo/search.html',
+                               error=error)
+    return render_template('weibo/captcha.html')
 
 
 @app.route('/douban/search', methods=['POST', 'GET'])
