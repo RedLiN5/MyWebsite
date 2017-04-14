@@ -29,7 +29,7 @@ class CollectWeibo(object):
         item = self.driver.find_element_by_xpath('/html/body/div[2]/form/div/img[1]')
         url_captcha = item.get_attribute('src')
         image_captcha = requests.get(url_captcha)
-        current_time = strftime("%Y-%m-%d_%H:%M:%S", localtime())
+        current_time = strftime("%Y%m%d_%H%M%S", localtime())
         self.captcha_name = 'captcha_{0}.jpg'.format(current_time)
         open('static/login_captcha/'+self.captcha_name, 'wb').write(image_captcha.content)
 
