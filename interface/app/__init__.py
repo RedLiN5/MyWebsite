@@ -88,11 +88,13 @@ def douban_search():
     error = ''
     try:
         if request.method == 'POST':
-            groupname = request.form['groupname']
+            groupid = request.form['groupname']
+            keywords = request.form['keywords']
             pagenum = request.form['pagenum']
-            if groupname != '' and pagenum != '':
+            if groupid != '' and pagenum != '':
                 return render_template('weibo/search_result.html',
-                                       groupname=groupname,
+                                       groupid=groupid,
+                                       keywords=keywords,
                                        pagenum=pagenum)
             else:
                 flash('\"Group Name\" or \"Page Num\" may be empty!',
