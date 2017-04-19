@@ -44,7 +44,7 @@ def weibo_search():
                     print(captcha_dir)
                     weibo.first_part()
                     return render_template('weibo/captcha.html',
-                                           captcha_name = captcha_dir)
+                                           captcha_dir = captcha_dir)
                 likes_dir = 'plots/weibo_likes_{0}.png'.format(username)
                 trend_dir = 'plots/weibo_trend_{0}.png'.format(username)
                 record_dir = 'plots/weibo_records_{0}.png'.format(username)
