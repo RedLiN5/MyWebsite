@@ -1,4 +1,4 @@
-
+# -*- encoding:utf-8 -*-
 import BeautifulSoup
 from urlparse import urljoin
 import requests
