@@ -106,6 +106,10 @@ def douban_search():
         flash(e)
         return render_template('douban/search.html', error=error)
 
+@app.route('/rent/search', methods=['POST', 'GET'])
+def rent_search():
+    return render_template('rent/rent.html')
+
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'
