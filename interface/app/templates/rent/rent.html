@@ -3,7 +3,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-        <title>毕业生租房</title>
+        <title>Rent Search</title>
         <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
         <link rel="stylesheet" href="http://cache.amap.com/lbs/static/jquery.range.css" />
         <script src="http://cache.amap.com/lbs/static/jquery-1.9.1.js"></script>
@@ -81,8 +81,8 @@
         var map = new AMap.Map("container", {
         resizeEnable: true,
         zoomEnable: true,
-        center: [116.397428, 39.90923],
-        zoom: 11
+        center: [121.5245819,31.22601336],
+        zoom: 10
     });
 
     var scale = new AMap.Scale();
@@ -159,7 +159,7 @@
 
     function addMarkerByAddress(address) {
         var geocoder = new AMap.Geocoder({
-            city: "北京",
+            city: "上海",
             radius: 1000
         });
         geocoder.getLocation(address, function(status, result) {
@@ -181,7 +181,7 @@
                     amapTransfer = new AMap.Transfer({
                         map: map,
                         policy: AMap.TransferPolicy.LEAST_TIME,
-                        city: "北京市",
+                        city: "上海市",
                         panel: 'transfer-panel'
                     });
                     amapTransfer.search([{
@@ -208,7 +208,7 @@
     function loadWorkLocation() {
         delWorkLocation();
         var geocoder = new AMap.Geocoder({
-            city: "北京",
+            city: "上海",
             radius: 1000
         });
 
