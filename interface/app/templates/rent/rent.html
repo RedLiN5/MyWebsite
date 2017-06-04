@@ -94,6 +94,7 @@
     var rentMarkerArray = [];
     var polygonArray = [];
     var amapTransfer;
+    var file;
 
     var infoWindow = new AMap.InfoWindow({
         offset: new AMap.Pixel(0, -30)
@@ -116,7 +117,7 @@
     }
 
     function importRentInfo() {
-        var file = "rent.csv";
+        file = "{{ url_for('static', filename='rent/rent.csv' ) }}";
         loadRentLocationByFile(file);
     }
 
@@ -173,7 +174,7 @@
                 });
                 rentMarkerArray.push(rentMarker);
 
-                rentMarker.content = "<div>房源：<a target = '_blank' href='http://bj.58.com/pinpaigongyu/?key=" + address + "'>" + address + "</a><div>"
+                rentMarker.content = "<div>房源：<a target = '_blank' href='http://sh.58.com/pinpaigongyu/?key=" + address + "'>" + address + "</a><div>"
                 rentMarker.on('click', function(e) {
                     infoWindow.setContent(e.target.content);
                     infoWindow.open(map, e.target.getPosition());
